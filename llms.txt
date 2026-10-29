@@ -1,0 +1,52 @@
+# ProCare Services LLC
+
+> Medical billing, audit and compliance firm for primary care and specialty practices, working remotely inside the client's practice management system and payer portals.
+
+## Services
+### Revenue & A/R
+- Aging A/R cleanup
+- RCM (revenue cycle) management
+- Medical coding
+- Denial management
+### Compliance & Risk
+- RADV readiness
+- HCC compliance (CMS-HCC V28, MEAT documentation)
+- HIPAA
+- Compliance program development
+- BLS compliance
+### Practice Support
+- Practice startups (new practices and practice acquisitions)
+- Credentialing
+- Training and education
+- Healthcare accounting
+### Seamless Transition Program
+- For practices switching from another billing or coding company: contract and notice-period review, parallel setup, claims cutoff plan, documented handoff, monitored go-live
+### How we work
+- Payer-side only: does not collect patient balances
+- HIPAA: signs a Business Associate Agreement (BAA) before accessing any data
+- Oversight: AAPC CPC, CRC and CPMA credentialed audit support
+
+## Who it's for
+Primary care and specialty practices, practice managers and physician owners looking for help with aging insurance claims, denials, coding, RADV and HCC compliance, HIPAA, credentialing, or opening or buying a practice.
+
+## Free tools
+- [A/R Recovery Calculator](https://procarepr.com/calculadora-recuperacion-cuentas-por-cobrar)
+- [Denial Cost & Staff Time Calculator](https://procarepr.com/calculadora-denegaciones-tiempo-personal)
+- [Timely Filing Deadline Checker](https://procarepr.com/verificador-termino-de-radicacion)
+- [Audit Readiness Check](https://procarepr.com/chequeo-cumplimiento-auditoria)
+
+## Blog
+- [Timely filing limits](https://procarepr.com/blog/terminos-de-radicacion-timely-filing)
+- [Days in A/R: formula and benchmarks](https://procarepr.com/blog/dias-en-cuentas-por-cobrar-days-in-ar)
+- [Audio-only telehealth and risk adjustment](https://procarepr.com/blog/telemedicina-solo-audio-ajuste-por-riesgo)
+
+## Free resources
+- [A/R Recovery Self-Assessment](https://procarepr.com/evaluacion-cuentas-por-cobrar)
+- [MEAT Documentation Grid, CMS-HCC V28](https://procarepr.com/guia-meat-documentacion)
+- [Audio-Only Telehealth Compliance Checklist](https://procarepr.com/telemedicina-solo-audio)
+- [Modifier 25 Audit Worksheet](https://procarepr.com/auditoria-modificador-25)
+- [Practice Compliance Program Template](https://procarepr.com/programa-de-cumplimiento-plantilla)
+
+## Contact
+- Website: https://procarepr.com
+- Email: info@procarepr.com

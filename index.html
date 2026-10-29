@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>
+/* Language choice, in order:
+   1. The visitor's own choice (ES/EN button), remembered on this device.
+   2. Location: a device set to Puerto Rico time (America/Puerto_Rico) gets Spanish.
+   3. Browser language: Spanish browsers get Spanish.
+   4. Everyone else (mainland visitors) gets English. */
+(function(){
+  var lang=null;
+  try{var s=localStorage.getItem('pc_lang'); if(s==='es'||s==='en') lang=s;}catch(e){}
+  if(!lang){
+    var tz=''; try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}
+    var list=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||''];
+    var first=String(list[0]||'').toLowerCase();
+    if(tz==='America/Puerto_Rico') lang='es';
+    else if(first.indexOf('es')===0) lang='es';
+    else lang='en';
+  }
+  document.documentElement.lang=lang;
+})();
+</script>
+<title>ProCare Services | Facturación médica, cumplimiento y apoyo a la práctica</title>
+<meta name="title-es" content="ProCare Services | Facturación médica, cumplimiento y apoyo a la práctica">
+<meta name="title-en" content="ProCare Services | Medical Billing, Compliance &amp; Practice Support">
+<meta name="description" content="ProCare Services LLC: A/R cleanup, RCM, coding, RADV and HCC compliance, HIPAA, credentialing and practice startups — from one team.">
+<meta property="og:title" content="ProCare Services | Medical Billing, Compliance &amp; Practice Support">
+<meta property="og:description" content="ProCare Services LLC: A/R cleanup, RCM, coding, RADV and HCC compliance, HIPAA, credentialing and practice startups — from one team.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/procare-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f2433; --ink-2:#36505f; --muted:#5d7380;
+  --sand:#f6f1e8; --paper:#fffdf9; --line:#e4dccd;
+  --teal:#0e6f69; --teal-2:#0a5a55; --teal-soft:#dcefeb;
+  --coral:#d9623f; --coral-soft:#fbe7df;
+  --cta:#e9a23b;--cta-hover:#d88f24;--cta-ink:#0f2433;--cta-glow:rgba(233,162,59,.32);--cta-strong:#9a5d06;--cta-on-dark:#f4bd5e;
+  --radius:16px; --shadow:0 1px 2px rgba(15,36,51,.05),0 10px 30px rgba(15,36,51,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:Manrope,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--sand);line-height:1.6;font-size:17px}
+h1,h2,h3{font-family:Lora,Georgia,serif;font-weight:700;line-height:1.12;letter-spacing:-.01em}
+a{color:var(--teal)}
+img{max-width:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+/* language switching: content blocks for each language; only active one shows */
+html[lang="es"] [data-l="en"], html[lang="en"] [data-l="es"]{display:none !important}
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:rgba(246,241,232,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand{flex-shrink:0}
+.brand img{height:46px;width:auto;max-width:none;object-fit:contain;display:block}
+.foot-logo img{max-width:none;object-fit:contain}
+@media (max-width:520px){
+  .brand img{height:30px}
+  .top .wrap{gap:10px}
+  .lang button{padding:6px 9px;font-size:12px}
+  .rmenu summary{font-size:14px;gap:4px}
+}
+@media (max-width:360px){.brand img{height:26px}}
+.foot-logo img{height:44px;width:auto;display:block}
+.word{font-family:Lora,Georgia,serif;font-size:24px;font-weight:700;letter-spacing:-.02em}
+.word b{color:var(--teal);font-weight:700}
+.word small{display:block;font-family:Manrope,sans-serif;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:-2px}
+.nav{display:flex;align-items:center;gap:22px}
+.nav a.l{color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px}
+.nav a.l:hover{color:var(--teal)}
+.lang{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.lang button{border:0;background:transparent;font:700 13px Manrope,sans-serif;padding:7px 12px;cursor:pointer;color:var(--ink);letter-spacing:.04em}
+html[lang="es"] .lang [data-set="es"], html[lang="en"] .lang [data-set="en"]{background:var(--ink);color:var(--paper)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 16px Manrope,sans-serif;padding:14px 22px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;transition:transform .15s,background .15s}
+.btn-primary{background:var(--cta);color:var(--cta-ink);box-shadow:0 6px 18px var(--cta-glow)}.btn-primary:hover{background:var(--cta-hover);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}.btn-ghost:hover{background:var(--ink);color:var(--paper)}
+.btn-sm{padding:9px 16px;font-size:14px}
+/* hero */
+.hero{padding:72px 0 64px;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--teal)}
+.hero h1{font-size:clamp(38px,5.4vw,62px);margin:16px 0 18px}
+.hero h1 em{font-style:italic;color:var(--teal)}
+.hero p.lead{font-size:19px;color:var(--ink-2);max-width:560px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font-size:13.5px;font-weight:600;background:var(--paper);border:1px solid var(--line);padding:6px 12px;border-radius:999px;color:var(--ink-2)}
+.hero-card{background:var(--ink);color:var(--paper);border-radius:22px;padding:30px;box-shadow:var(--shadow);position:relative}
+.hero-card h3{font-size:22px;margin-bottom:16px}
+.hero-card ol{list-style:none;counter-reset:s}
+.hero-card li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:12px 0;border-top:1px solid rgba(255,255,255,.12);font-size:15.5px;color:#d7e3e8}
+.hero-card li:first-child{border-top:0}
+.hero-card li::before{content:counter(s);width:30px;height:30px;border-radius:50%;background:#7fd3c9;color:var(--ink);display:grid;place-items:center;font-weight:700;font-size:14px}
+.hero-card li b{color:#fff;display:block}
+.hero-card .note{margin-top:14px;font-size:13px;color:#9fb6c0}
+/* sections */
+section{padding:72px 0}
+.sec-head{max-width:680px;margin-bottom:38px}
+.sec-head h2{font-size:clamp(30px,3.8vw,42px);margin:10px 0 12px}
+.sec-head p{color:var(--ink-2);font-size:18px}
+.alt{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+.alt .card{background:var(--sand)}
+.pkg{display:flex;flex-direction:column}
+.pkg .tag{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.pkg h3{font-size:26px;margin:6px 0 8px}
+.pkg .for{color:var(--muted);font-size:15px;margin-bottom:16px}
+.pkg ul{list-style:none;flex:1}
+.pkg li{padding:7px 0 7px 26px;position:relative;font-size:15.5px;border-top:1px dashed var(--line)}
+.pkg li::before{content:"";position:absolute;left:2px;top:14px;width:12px;height:7px;border-left:2.5px solid var(--teal);border-bottom:2.5px solid var(--teal);transform:rotate(-45deg)}
+.pkg .btn{margin-top:20px;align-self:flex-start}
+.pkg.featured{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pkg.featured .for{color:#a9bec7}.pkg.featured li{border-color:rgba(255,255,255,.14)}
+.pkg.featured li::before{border-color:#7fd3c9}
+.pkg.featured .btn-ghost{color:var(--paper);border-color:var(--paper)}
+.why .card h3{font-size:20px;margin-bottom:6px}
+.why .ic{width:44px;height:44px;border-radius:12px;background:var(--teal-soft);color:var(--teal);display:grid;place-items:center;margin-bottom:14px}
+.why .card p{color:var(--ink-2);font-size:15.5px}
+.res a.card{display:block;text-decoration:none;color:var(--ink);transition:transform .15s,border-color .15s}
+.res a.card:hover{transform:translateY(-3px);border-color:var(--teal)}
+.res .kind{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.res h3{font-size:21px;margin:8px 0}
+.res p{color:var(--ink-2);font-size:15px}
+.res .go{display:inline-block;margin-top:12px;font-weight:700;color:var(--teal)}
+.faq details{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:10px}
+.faq summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::after{content:"+";color:var(--teal);font-size:22px;line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin-top:10px;color:var(--ink-2)}
+/* form */
+.contact .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:start}
+.contact .side p{color:var(--ink-2);margin-bottom:14px}
+.contact .side .mail{font-weight:700;font-size:18px}
+form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:14px;font-weight:700;color:var(--ink-2)}
+.field input,.field select,.field textarea{font:500 16px Manrope,sans-serif;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted);margin:4px 0 16px}
+.consent input{margin-top:4px;width:18px;height:18px;flex:none;accent-color:var(--teal)}
+.phi{font-size:13px;background:var(--coral-soft);color:#8a3a20;border-radius:10px;padding:10px 12px;margin-bottom:14px}
+.hidden{display:none !important}
+.ok{background:var(--teal-soft);border:1px solid #b6ddd6;border-radius:var(--radius);padding:26px}
+.ok h3{font-size:24px;margin-bottom:8px}
+.err{color:#a1361a;font-size:14px;margin-top:10px}
+footer{background:var(--ink);color:#a9bec7;padding:40px 0;font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 28px}
+footer a{color:#dbe7ec}
+/* hero media: drop hero.jpg into the site folder and the photo appears */
+.hero-media{position:relative}
+.hero-photo{display:none}
+.hero-media.has-photo .hero-photo{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:22px;box-shadow:var(--shadow)}
+.hero-media.has-photo .hero-card{position:absolute;left:-28px;bottom:-28px;width:78%;padding:22px}
+.hero-media.has-photo .hero-card h3{font-size:18px;margin-bottom:8px}
+.hero-media.has-photo .hero-card li{padding:8px 0;font-size:14px}
+.hero-chart{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:22px 22px 70px}
+.hero-media.has-photo .hero-chart{display:none}
+.hc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.hc-k{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.hero-chart h3{font-family:Lora,Georgia,serif;font-size:21px;margin-top:4px}
+.hc-pill{background:var(--teal-soft);color:var(--teal);font-weight:700;font-size:13px;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.chart-svg{width:100%;height:auto;display:block;margin-top:6px}
+.chart-svg .ax{font:600 12px Manrope,system-ui,sans-serif;fill:#5d7380}
+.hc-legend{display:flex;gap:18px;font-size:13px;color:var(--ink-2);margin-top:2px}
+.hc-legend i{display:inline-block;vertical-align:middle;margin-right:6px}
+.hc-legend .sq{width:12px;height:12px;border-radius:3px;background:#0e6f69}
+.hc-legend .dl{width:18px;border-top:2.5px dashed #0f2433}
+html[lang="es"] svg [data-l="en"], html[lang="en"] svg [data-l="es"]{display:none}
+
+/* hero: Power BI-style sample client dashboard */
+.hero .wrap>*,.hero-media{min-width:0}
+.hero-chart.pbi{padding:0 0 74px;overflow:hidden;background:#fff;max-width:100%}
+.pbi-row>*,.pbi-kpis>*{min-width:0}
+.pbi-top{display:flex;align-items:center;gap:10px;background:var(--ink);color:#cfe0e6;padding:10px 14px;font-size:12.5px;font-weight:600}
+.pbi-top .hc-pill{margin-left:auto;background:rgba(127,211,201,.18);color:#7fd3c9;font-size:11.5px;padding:3px 9px}
+.pbi-dots{display:flex;gap:5px}.pbi-dots i{width:9px;height:9px;border-radius:50%;background:#e57b5c}.pbi-dots i:nth-child(2){background:var(--cta)}.pbi-dots i:nth-child(3){background:#7fd3c9}
+.pbi-tabs{display:flex;gap:4px;padding:8px 12px 0;background:#f1ece2;border-bottom:1px solid var(--line);font-size:12px}
+.pbi-tabs b,.pbi-tabs span{padding:6px 10px;border-radius:7px 7px 0 0;color:var(--muted);font-weight:600}
+.pbi-tabs b{background:#fff;color:var(--ink);border:1px solid var(--line);border-bottom-color:#fff;margin-bottom:-1px}
+.pbi-body{padding:12px 14px;background:var(--sand)}
+.pbi-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.pbi-h span{font-family:Lora,Georgia,serif;font-weight:700;font-size:16px;color:var(--ink)}.pbi-h em{font-style:normal;font-size:12px;color:var(--muted);font-weight:600}
+.pbi-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
+.pbi-kpis div{background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 9px}
+.pbi-kpis span{display:block;font-size:10.5px;color:var(--muted);font-weight:700;line-height:1.2}
+.pbi-kpis b{display:block;font-family:Lora,Georgia,serif;font-size:21px;color:var(--ink);line-height:1.2;margin-top:2px}
+.pbi-kpis i{font-style:normal;font-size:10.5px;font-weight:700}.pbi-kpis i.up{color:#226965}
+.pbi-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.pbi-viz{background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+.pbi-vt{display:block;font-size:11px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.pbi-svg{width:100%;height:auto;display:block}.pbi-svg .ax{font:600 8.5px Manrope,system-ui,sans-serif;fill:#5d7380}
+.pbi-bar{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:8px;font-size:11px;color:var(--ink-2);padding:2px 0}
+.pbi-bar i{height:9px;border-radius:5px;background:linear-gradient(90deg,#226965,#7fd3c9)}
+@media (max-width:520px){.pbi-kpis{grid-template-columns:1fr 1fr}.pbi-bar{grid-template-columns:118px 1fr}.pbi-tabs span:nth-child(n+4){display:none}.pbi-h span{font-size:14.5px}}
+/* card overlaps the chart (same layout as with a photo) */
+.hero-media .hero-card{position:relative;margin:-58px 0 0 auto;width:86%;padding:22px;z-index:2}
+.hero-media .hero-card h3{font-size:18px;margin-bottom:8px}
+.hero-media .hero-card li{padding:8px 0;font-size:14px}
+/* urgency band */
+.urgent{background:var(--ink);color:#d7e3e8;padding:44px 0}
+.urgent .wrap{display:grid;grid-template-columns:1fr 2fr;gap:36px;align-items:center}
+.urgent h2{color:#fff;font-size:clamp(26px,3vw,34px)}
+.urgent p.s{margin-top:10px;font-size:15.5px;color:#a9bec7}
+.urgent .btn{margin-top:18px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.fact{border-top:2px solid rgba(255,255,255,.16);padding-top:12px}
+.fact b{display:block;font-family:Lora,Georgia,serif;font-size:30px;line-height:1.1;color:var(--cta-on-dark)}
+.fact span{font-size:13.5px;color:#a9bec7}
+/* systems strip */
+.systems{padding:30px 0;border-bottom:1px solid var(--line)}
+.systems .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:14px 30px}
+.systems .lbl{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.systems .sys{font-family:Lora,Georgia,serif;font-weight:700;font-size:19px;color:#8a9aa3;letter-spacing:-.01em}
+.systems .sys img{height:26px;width:auto;filter:grayscale(1);opacity:.7}
+/* services */
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.svc-feature,.alt .card.svc-feature{grid-column:1/-1;background:var(--ink);color:var(--paper);border-color:var(--ink);display:grid;grid-template-columns:.8fr 1.2fr;gap:34px}
+.svc-feature .tag{color:#7fd3c9;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.svc-feature h3{font-size:30px;margin:8px 0 10px}
+.svc-feature .for{color:#a9bec7;font-size:16px}
+.svc-feature .btn-ghost{color:var(--paper);border-color:var(--paper);margin-top:20px}
+.svc-list{display:grid;grid-template-columns:1fr 1fr;gap:4px 22px}
+.svc-item{padding:12px 0;border-top:1px solid rgba(255,255,255,.14)}
+.svc-item b{display:block;color:#fff;font-size:16px}
+.svc-item span{font-size:14.5px;color:#b9cbd2}
+.premium{display:inline-block;margin-left:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(127,211,201,.16);color:#7fd3c9;padding:3px 8px;border-radius:999px;vertical-align:middle}
+.step2{margin-top:18px;padding-top:18px;border-top:1px dashed #b6ddd6}
+.step2 .kick{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.step2 h3{font-size:22px;margin:6px 0}
+.step2 p{color:var(--ink-2);font-size:15px;margin-bottom:12px}
+.tier li{padding:10px 0 10px 26px}
+.tier li b{display:block;font-size:15.5px}
+.tier li span{display:block;font-size:14px;color:var(--muted);line-height:1.45}
+.pkg.featured.tier li span{color:#a9bec7}
+.pkg.featured.tier li b{color:#fff}
+.tier .premium{background:var(--teal-soft);color:var(--teal)}
+.pkg.featured .tag{color:#7fd3c9}
+.pkg.featured.tier .premium{background:rgba(127,211,201,.16);color:#7fd3c9}
+.pkg.featured,.alt .card.pkg.featured{background:var(--ink)}
+@media (min-width:901px){.tiers .featured{transform:translateY(-12px)}}
+/* transition program */
+.transition{background:var(--teal-2);color:#e3f1ee}
+.transition .sec-head h2{color:#fff}
+.transition .sec-head p{color:#cfe6e2}
+.transition .eyebrow{color:#a7e3da}.transition .eyebrow::before{background:#a7e3da}
+.tsteps{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;counter-reset:t;margin-top:8px}
+.tsteps li{counter-increment:t;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:20px;position:relative}
+.tsteps li::before{content:counter(t);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--teal-2);font-weight:700;margin-bottom:12px}
+.tsteps b{display:block;color:#fff;font-size:16.5px;margin-bottom:4px}
+.tsteps span{font-size:14.5px;color:#cfe6e2;line-height:1.5}
+.tpromise{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18)}
+.tpromise p{font-size:15px;color:#cfe6e2;max-width:640px}
+.tpromise p b{color:#fff}
+.transition .btn-ghost{color:#fff;border-color:#fff}.transition .btn-ghost:hover{background:#fff;color:var(--teal-2)}
+@media (max-width:900px){.tsteps{grid-template-columns:1fr}.tsteps li{display:grid;grid-template-columns:44px 1fr;align-items:start}.tsteps li::before{margin:0}}
+/* landing pages */
+.lp-top .wrap{height:62px}
+.lp{padding:56px 0 72px}
+.lp .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start}
+.lp h1{font-size:clamp(34px,4.8vw,54px);margin:14px 0 16px}
+.lp .lead{font-size:19px;color:var(--ink-2)}
+.inside{margin-top:28px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.inside h3{font-size:19px;margin-bottom:10px}
+.inside ul{list-style:none}
+.inside li{padding:9px 0 9px 30px;position:relative;border-top:1px dashed var(--line);font-size:15.5px}
+.inside li:first-child{border-top:0}
+.inside li::before{content:"";position:absolute;left:3px;top:15px;width:12px;height:7px;border-left:2.5px solid var(--teal);border-bottom:2.5px solid var(--teal);transform:rotate(-45deg)}
+.proof{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.formcard{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:var(--shadow);position:sticky;top:84px}
+.formcard h2{font-size:26px;margin-bottom:6px}
+.formcard .sub{color:var(--muted);font-size:15px;margin-bottom:18px}
+.formcard .btn{width:100%}
+.dl{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.mob-only{display:none}
+/* resources dropdown */
+.rmenu{position:relative}
+.rmenu summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);font-weight:600;font-size:15px;padding:6px 2px}
+.rmenu summary::-webkit-details-marker{display:none}
+.rmenu summary:hover,.rmenu[open] summary{color:var(--teal)}
+.rmenu[open] summary svg{transform:rotate(180deg)}
+.rm-panel{position:absolute;right:-12px;top:calc(100% + 10px);width:340px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px rgba(15,36,51,.18);padding:10px;z-index:30}
+.rm-head{display:block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:6px 10px 8px}
+.rm-panel a{display:flex;gap:14px;align-items:center;padding:10px;border-radius:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:15px;line-height:1.3}
+.rm-panel a:hover{background:var(--sand)}
+.rm-panel small{display:block;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
+.rm-cover{flex:none;width:38px}
+.rm-cover img{display:block;width:38px;height:auto;border-radius:2px;background:#fff;border:1px solid var(--line);box-shadow:0 3px 8px rgba(15,36,51,.15)}
+
+.rm-panel{width:620px}
+.rm-cols{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.rm-ic{flex:none;width:38px;height:38px;border-radius:10px;background:var(--teal-soft);color:var(--teal);display:grid;place-items:center}
+.rm-all{display:block!important;text-align:center;border-top:1px solid var(--line);border-radius:0 0 10px 10px!important;margin-top:6px;color:var(--teal)!important}
+@media (max-width:700px){.rm-panel{position:fixed;left:12px;right:12px;top:70px;width:auto;max-height:calc(100vh - 90px);overflow:auto}.rm-cols{grid-template-columns:1fr}}
+.tq blockquote{font-family:Lora,Georgia,serif;font-size:19px;line-height:1.45;color:var(--ink)}.tq figcaption{margin-top:14px;font-size:14px;color:var(--muted)}.tq figcaption b{display:block;color:var(--ink)}
+
+/* team */
+.tm-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tm{display:grid;grid-template-columns:132px 1fr;gap:20px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.tm img{width:132px;height:132px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 4px var(--paper),0 0 0 6px var(--teal)}
+.tm h3{font-size:22px}.tm-t{display:block;font-weight:700;color:var(--teal);font-size:14.5px;margin-top:2px}
+.tm-c{display:block;font-size:12px;font-weight:700;letter-spacing:.14em;color:#b07a12;margin-top:3px}
+.tm p{color:var(--ink-2);font-size:15.5px;margin-top:8px}
+@media (max-width:900px){.tm-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.tm{grid-template-columns:1fr;text-align:center}.tm img{margin:0 auto}}
+/* featured preview on the homepage */
+.featured-peek{background:var(--sand);border:1px solid var(--line);border-radius:22px;padding:34px 36px 38px;box-shadow:var(--shadow)}
+.featured-peek .peek{margin-top:0;grid-template-columns:230px 1fr;gap:40px}
+.featured-peek .pk-cover img{width:200px}
+.pk-title{font-size:28px;margin-bottom:6px}
+.pk-get{margin-top:20px}
+.more-res{font-size:22px;margin:44px 0 16px}
+.res .grid3 a.card.has-cover{padding-right:100px;min-height:200px}
+.res .grid3 .res-cover,.res .grid3 .res-cover img{width:64px}
+@media (max-width:900px){.rmenu summary{font-size:14px}}
+@media (max-width:520px){
+  .rm-panel{position:fixed;left:12px;right:12px;top:70px;width:auto}
+  .featured-peek{padding:26px 18px 30px}
+  .featured-peek .peek{grid-template-columns:1fr;gap:34px}
+  .pk-title{font-size:24px}
+  .nav{gap:12px}
+}
+
+/* mini cover tucked onto buttons + resource cards */
+.btn-peek{position:relative;padding-left:72px;overflow:visible}
+.bp-cover{position:absolute;left:16px;bottom:5px;width:44px;transform:rotate(-8deg);transform-origin:bottom left;transition:transform .2s;pointer-events:none}
+.bp-cover img{display:block;width:44px;height:auto;border-radius:2px 3px 3px 2px;background:#fff;box-shadow:inset 3px 0 4px -2px rgba(0,0,0,.35),0 4px 10px rgba(15,36,51,.30)}
+.btn-peek:hover .bp-cover{transform:rotate(-14deg) translateY(-6px) scale(1.12)}
+.formcard .btn-peek{margin-top:14px}
+.res a.card.has-cover{position:relative;padding-right:128px;min-height:180px}
+.res-cover{position:absolute;right:24px;top:24px;width:84px;transform:rotate(4deg);transition:transform .2s}
+.res-cover img{display:block;width:84px;height:auto;border-radius:3px 5px 5px 3px;background:#fff;border:1px solid var(--line);box-shadow:inset 4px 0 6px -3px rgba(0,0,0,.3),0 8px 18px rgba(15,36,51,.18)}
+.res a.card.has-cover:hover .res-cover{transform:rotate(0) translateY(-4px) scale(1.05)}
+@media (max-width:520px){.res a.card.has-cover{padding-right:96px}.res-cover,.res-cover img{width:64px}.res-cover{right:16px;top:20px}}
+
+/* look-inside preview */
+.peek{margin-top:28px;display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:center}
+.pk-cover{position:relative;border:0;background:none;padding:0;cursor:pointer;perspective:900px;justify-self:center}
+.pk-cover img{position:relative;z-index:2;display:block;width:180px;height:auto;border-radius:3px 6px 6px 3px;transform:rotateY(-14deg);transform-origin:left center;
+  box-shadow:inset 6px 0 10px -6px rgba(0,0,0,.4),10px 14px 28px rgba(15,36,51,.28);transition:transform .25s}
+.pk-cover::before{content:"";position:absolute;z-index:3;left:0;top:0;bottom:0;width:10px;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(255,255,255,.12) 60%,transparent);border-radius:3px 0 0 3px;transform:rotateY(-14deg);transform-origin:left center;pointer-events:none}
+.pk-stack{position:absolute;z-index:1;left:8px;top:6px;right:-8px;bottom:-4px;background:#fff;border:1px solid var(--line);border-radius:3px 6px 6px 3px;transform:rotateY(-14deg);transform-origin:left center;box-shadow:3px 3px 0 #f1ece2,6px 6px 0 #e7e0d3}
+.pk-cover:hover img{transform:rotateY(-6deg)}
+.pk-tag{position:absolute;z-index:4;left:50%;bottom:-14px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;background:var(--ink);color:#fff;font:700 13px Manrope,sans-serif;padding:7px 13px;border-radius:999px;box-shadow:0 6px 14px rgba(15,36,51,.25)}
+.pk-meta{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.pk-val{list-style:none;margin:8px 0 14px}
+.pk-val li{position:relative;padding:4px 0 4px 22px;font-size:15px;font-weight:600;color:var(--ink)}
+.pk-val li::before{content:"";position:absolute;left:2px;top:11px;width:10px;height:6px;border-left:2.5px solid var(--cta);border-bottom:2.5px solid var(--cta);transform:rotate(-45deg)}
+.pk-val li:last-child{font-weight:500;color:var(--muted);font-size:14px}
+.pk-thumbs{display:flex;gap:10px;flex-wrap:wrap}
+.pk-th{position:relative;border:1px solid var(--line);background:#fff;padding:0;border-radius:4px;cursor:pointer;overflow:hidden;box-shadow:0 3px 8px rgba(15,36,51,.10);transition:transform .15s}
+.pk-th:hover{transform:translateY(-3px)}
+.pk-th img{display:block;width:72px;height:auto}
+.pk-lock img{filter:blur(3px);opacity:.6}
+.pk-lock span{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:2px;color:var(--ink);background:rgba(255,253,249,.45)}
+.pk-lock span svg{width:18px;height:18px}.pk-lock b{font-size:13px}
+.pk-view{border:0;padding:0;background:transparent;max-width:min(760px,94vw);width:100%;margin:auto;overflow:visible}
+.pk-view::backdrop{background:rgba(9,22,32,.82)}
+.pk-bar{display:flex;justify-content:space-between;align-items:center;color:#d7e3e8;font:600 14px Manrope,sans-serif;padding:0 4px 10px}
+.pk-x{background:none;border:0;color:#fff;font-size:34px;line-height:1;cursor:pointer;padding:0 6px}
+.pk-stage{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px}
+.pk-nav{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:30px;line-height:1;cursor:pointer}
+.pk-nav:disabled{opacity:.25;cursor:default}
+.pk-pg{position:relative;background:#fff;border-radius:6px;overflow:hidden;max-height:82vh;display:flex;justify-content:center}
+.pk-pg img{display:block;max-width:100%;max-height:82vh;width:auto;height:auto}
+.pk-gate{display:none;position:absolute;inset:0;place-items:center;text-align:center;padding:24px;background:linear-gradient(rgba(255,253,249,.35),rgba(255,253,249,.92) 45%)}
+.pk-gate>div{max-width:340px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+.pk-gate svg{color:var(--teal)}.pk-gate h3{font-size:21px;margin:6px 0}.pk-gate p{color:var(--ink-2);font-size:15px;margin-bottom:14px}
+.pk-view.locked .pk-pg img{filter:blur(6px)}
+.pk-view.locked .pk-gate{display:grid}
+@media (max-width:520px){.peek{grid-template-columns:1fr;gap:30px}.pk-cover img{width:170px}.pk-stage{grid-template-columns:34px 1fr 34px;gap:4px}.pk-nav{width:34px;height:34px;font-size:24px}}
+
+.lp-foot{padding:26px 0;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+@media (max-width:900px){
+  .hero .wrap,.contact .wrap,.lp .wrap,.urgent .wrap,.svc-feature{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr 1fr}
+  .svc-grid,.svc-list{grid-template-columns:1fr}
+  .hero-media.has-photo .hero-card,.hero-media .hero-card{position:relative;left:auto;bottom:auto;width:auto;margin:-48px 12px 0 12px}
+  .grid3{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}
+  .nav a.l{display:none}
+  .formcard{position:static;scroll-margin-top:80px}
+  .mob-only{display:inline-flex}
+  .hero{padding:44px 0}
+  section{padding:56px 0}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  form .row{grid-template-columns:1fr;gap:0}
+  .nav .btn{display:none}
+  .lp-top .nav .btn{display:none}
+}
+
+/* interactive tools */
+.tool{display:grid;grid-template-columns:1.1fr .9fr;background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.tool-in{padding:28px}
+.tool-in h3{font-size:20px;margin-bottom:14px}.tool-in h4{font:700 13px Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:16px 0 10px}
+.tf{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.tf label{font-size:13.5px;font-weight:700;color:var(--ink-2);line-height:1.3}
+.tf-in{position:relative;display:flex;align-items:center}
+.tf-in input,.tf select{font:600 16px Manrope,sans-serif;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+.tf-in.has-pre input{padding-left:26px}.tf-in.has-suf input{padding-right:30px}
+.tf-in .pre,.tf-in .suf{position:absolute;color:var(--muted);font-weight:700;pointer-events:none}.tf-in .pre{left:12px}.tf-in .suf{right:12px}
+.tf-in input:focus,.tf select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+.tf .hint{font-size:12.5px;color:var(--muted);line-height:1.35}
+.tf-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.assump{margin-top:6px;border-top:1px dashed var(--line);padding-top:12px}
+.assump summary{cursor:pointer;font-weight:700;color:var(--teal);font-size:14.5px}
+.assump p{font-size:13.5px;color:var(--muted);margin:8px 0 12px}
+.assump[open] summary{margin-bottom:8px}
+.tool-out{background:var(--ink);color:#d7e3e8;padding:28px;display:flex;flex-direction:column}
+.out-k{display:block;font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7fd3c9;margin-bottom:12px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.kpi{border-top:1px solid rgba(255,255,255,.14);padding-top:10px}
+.kpi b{display:block;font-family:Lora,Georgia,serif;font-size:30px;line-height:1.1;color:#fff;word-break:break-word}
+.kpi.gold b{color:var(--cta-on-dark)}
+.kpi span{font-size:13px;color:#a9bec7;line-height:1.35;display:block;margin-top:2px}
+.loss{margin-top:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px}
+.loss b{font-family:Lora,Georgia,serif;font-size:24px;color:var(--cta-on-dark);display:block}.loss span{font-size:13px;color:#b9cbd2}
+.verdict{margin-top:auto;padding-top:16px}
+.verdict p{font-size:14.5px;color:#d7e3e8;margin-bottom:10px}.verdict p.fine{font-size:12px;color:#8fa6b0}
+.chips-out{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.svc-chip{display:inline-block;font-size:13px;font-weight:700;color:var(--ink);background:#fff;border-radius:999px;padding:6px 12px;text-decoration:none}
+.svc-chip:hover{background:var(--cta)}
+.dl-big b{display:block;font-family:Lora,Georgia,serif;font-size:32px;color:#fff;line-height:1.15}
+.dl-big span{display:block;font-weight:700;color:var(--cta-on-dark);margin-top:4px;font-size:17px}
+.dl-big.sm b{font-size:24px}
+.meter{height:10px;border-radius:99px;background:rgba(255,255,255,.12);margin:16px 0 18px;overflow:hidden}
+.meter i{display:block;height:100%;background:#7fd3c9;border-radius:99px;transition:width .3s}.meter i.w{background:var(--cta)}.meter i.x{background:#e57b5c}
+.red-box{border-top:1px solid rgba(255,255,255,.14);padding-top:14px;margin-bottom:6px}
+.tool-cc .tool-in{padding:24px 28px}
+.cc-area{border:0;margin-bottom:10px}
+.cc-area legend{font:700 12px Manrope,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.cc-q{padding:10px 0;border-top:1px dashed var(--line)}
+.cc-q p{font-size:15px;font-weight:600;margin-bottom:8px;line-height:1.4}
+.segs{display:flex;gap:8px}
+.seg{position:relative;cursor:pointer}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg>span{display:inline-block;padding:7px 14px;border:1.5px solid var(--line);border-radius:999px;font-size:14px;font-weight:700;color:var(--ink-2);background:#fff}
+.seg input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
+.seg input:focus-visible+span{box-shadow:0 0 0 3px var(--teal-soft)}
+.ring{position:relative;width:150px;height:150px;margin:4px auto 6px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:11}.rg-bg{stroke:rgba(255,255,255,.12)}
+.rg-fg{stroke:#7fd3c9;stroke-linecap:round;stroke-dasharray:327;stroke-dashoffset:327;transition:stroke-dashoffset .4s}
+.rg-fg.w{stroke:var(--cta)}.rg-fg.x{stroke:#e57b5c}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:Lora,Georgia,serif;font-size:34px;color:#fff}
+.cc-prog{text-align:center;font-size:13px;color:#a9bec7;margin-bottom:12px}
+.cc-row{display:grid;grid-template-columns:1fr 90px 44px;gap:10px;align-items:center;font-size:13.5px;padding:6px 0}
+.cc-row i{height:8px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.cc-row i em{display:block;height:100%;background:#7fd3c9}.cc-row i.w em{background:var(--cta)}.cc-row i.x em{background:#e57b5c}
+.cc-row b{text-align:right;color:#fff}
+.t-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:22px}
+.t-cta span{color:var(--muted);font-size:15px}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tcard{display:block;text-decoration:none;color:var(--ink);transition:transform .15s,border-color .15s}
+.tcard:hover{transform:translateY(-3px);border-color:var(--teal)}
+.tcard .kind{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.tcard h3{font-size:20px;margin:8px 0}.tcard p{color:var(--ink-2);font-size:15px}.tcard .go{display:inline-block;margin-top:10px;font-weight:700;color:var(--teal)}
+.tools-sec{border-bottom:1px solid var(--line)}
+.tpage .t-hero{padding:44px 0 10px}
+.crumbs{font-size:13.5px;color:var(--muted);margin-bottom:14px}.crumbs a{color:var(--muted)}
+.t-hero h1{font-size:clamp(32px,4.4vw,50px);margin:12px 0 12px;max-width:820px}.t-hero h1 em{font-style:italic;color:var(--teal)}
+.t-hero .lead{font-size:18.5px;color:var(--ink-2);max-width:720px}
+.t-tool{padding:26px 0 64px}
+.t-explain{display:grid;grid-template-columns:1fr 1fr;gap:44px}
+.t-explain h2{font-size:30px;margin-bottom:14px}.t-explain h3{font-size:18px;margin:22px 0 8px}
+.t-explain ul{padding-left:18px}.t-explain li{margin-bottom:9px;color:var(--ink-2);font-size:15.5px}
+.t-explain .src li{font-size:13.5px;color:var(--muted)}
+.t-bottom{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:start}
+.t-bottom .tgrid{grid-template-columns:1fr}
+.res-lead{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:var(--shadow);scroll-margin-top:90px}
+.res-lead h3{font-size:24px;margin-bottom:6px}.res-lead>form>p{color:var(--ink-2);font-size:15px;margin-bottom:16px}
+.res-lead .btn{width:100%}
+@media (max-width:900px){.tool,.t-explain,.t-bottom{grid-template-columns:1fr}.tgrid{grid-template-columns:1fr}}
+@media (max-width:520px){.tool-in,.tool-out{padding:20px}.kpi b{font-size:25px}.tf-grid{grid-template-columns:1fr}.segs{flex-wrap:wrap}.cc-row{grid-template-columns:1fr 70px 40px}}
+
+.bcard{display:block;text-decoration:none;color:var(--ink);transition:transform .15s,border-color .15s}
+.bcard:hover{transform:translateY(-3px);border-color:var(--teal)}
+.bcard .kind{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.bcard h3{font-size:20px;margin:8px 0}.bcard p{color:var(--ink-2);font-size:15px}.bcard .go{display:inline-block;margin-top:10px;font-weight:700;color:var(--teal)}
+.post{padding:40px 0 60px}.post .wrap{max-width:760px}
+.post h1{font-size:clamp(30px,4.2vw,46px);margin:12px 0 10px}
+.post-meta{color:var(--muted);font-size:14.5px;margin-bottom:26px}
+.post-body h2{font-size:26px;margin:30px 0 10px}
+.post-body p{font-size:18px;color:var(--ink-2);margin-bottom:14px;line-height:1.7}
+.post-body ul{padding-left:22px;margin-bottom:16px}.post-body li{font-size:17.5px;color:var(--ink-2);margin-bottom:8px;line-height:1.6}
+.post-body strong{color:var(--ink)}
+.post-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px;background:var(--ink);color:#d7e3e8;border-radius:18px;padding:22px 24px;margin:34px 0 22px}
+.post-cta div{flex:1 1 260px}.post-cta b{display:block;color:#fff;font-size:18px}.post-cta span{font-size:14.5px;color:#a9bec7}
+.post-cta .btn-ghost{color:#fff;border-color:#fff}
+.post-src{font-size:13.5px;color:var(--muted)}.post-src ul{padding-left:18px;margin:6px 0 10px}
+.blog-sec{border-top:1px solid var(--line)}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "ProfessionalService", "@id": "https://procarepr.com/#org", "name": "ProCare Services LLC", "url": "https://procarepr.com", "email": "info@procarepr.com", "description": "Medical billing, compliance and practice support firm for primary care and specialty practices. Revenue & A/R: aging A/R cleanup, RCM management, coding, denial management. Compliance & Risk: RADV readiness, HCC compliance (CMS-HCC V28), HIPAA, compliance program development, BLS compliance. Practice Support: practice startups and acquisitions, credentialing, training and education, healthcare accounting. Seamless Transition Program for practices switching from another billing or coding company.", "knowsLanguage": ["es", "en"], "serviceType": ["Aging A/R cleanup", "RCM management", "Medical coding", "Denial management", "RADV readiness", "HCC compliance", "HIPAA compliance", "Compliance program development", "BLS compliance", "Practice startups", "Credentialing", "Healthcare training and education", "Healthcare accounting", "Billing vendor transition"], "knowsAbout": ["Medicare Advantage", "CMS-HCC V28", "RADV audit readiness", "Modifier 25", "Audio-only telehealth", "Revenue cycle management"]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do you need access to our system to start?", "acceptedAnswer": {"@type": "Answer", "text": "No. For the free review we only need a de-identified aging report. System access comes later, after a signed BAA."}}, {"@type": "Question", "name": "Do you collect from our patients?", "acceptedAnswer": {"@type": "Answer", "text": "No. We work payer-side only. Patient balance collection isn't part of any package."}}, {"@type": "Question", "name": "What kinds of practices do you work with?", "acceptedAnswer": {"@type": "Answer", "text": "Primary care and specialty practices. We work remotely, inside your PM system and payer portals."}}, {"@type": "Question", "name": "Do you only do billing?", "acceptedAnswer": {"@type": "Answer", "text": "No. We also provide RADV readiness, HCC compliance, HIPAA, compliance program development, BLS compliance, practice startups, credentialing, training and education, and healthcare accounting."}}, {"@type": "Question", "name": "Do you help new practices or practice buyers?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Practice startups covers pre-purchase due diligence, billing setup, credentialing, HIPAA and a compliance program from day one."}}, {"@type": "Question", "name": "What about the contract with my current billing company?", "acceptedAnswer": {"@type": "Answer", "text": "We review it with you up front. The decision and the termination notice are yours; we plan the cutover date around your notice period so collections don't stall and no claim is left without an owner."}}, {"@type": "Question", "name": "How much does it cost?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on volume and scope. We start with a free review and give you a clear written proposal — no surprises."}}]}]}</script>
+<script>window.pcTrack=function(n,p){try{if(window.gtag)gtag('event',n,p||{});if(window.clarity)clarity('event',n)}catch(e){}}</script>
+<link rel="canonical" href="https://procarepr.com/">
+</head>
+<body>
+
+<header class="top"><div class="wrap"><a class="brand" href="/" aria-label="ProCare Services LLC — home"><img src="/procare-logo.png" alt="ProCare Services LLC" width="182" height="44"></a>
+ <nav class="nav"><a class="l" href="#servicios"><span data-l="es">Servicios</span><span data-l="en">Services</span></a><details class="rmenu"><summary><span data-l="es">Recursos</span><span data-l="en">Resources</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></summary><div class="rm-panel"><div class="rm-cols"><div><span class="rm-head"><span data-l="es">Calculadoras gratis</span><span data-l="en">Free calculators</span></span><a href="/calculadora-recuperacion-cuentas-por-cobrar"><span class="rm-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15v3M8 18h4"/></svg></span><span><small><span data-l="es">Calculadora</span><span data-l="en">Calculator</span></small><span data-l="es">Calculadora de recuperación de cuentas por cobrar</span><span data-l="en">A/R Recovery Calculator</span></span></a><a href="/calculadora-denegaciones-tiempo-personal"><span class="rm-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg></span><span><small><span data-l="es">Calculadora</span><span data-l="en">Calculator</span></small><span data-l="es">Calculadora de denegaciones y horas de personal</span><span data-l="en">Denial Cost & Staff Time Calculator</span></span></a><a href="/verificador-termino-de-radicacion"><span class="rm-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span><small><span data-l="es">Verificador</span><span data-l="en">Checker</span></small><span data-l="es">Verificador de término de radicación</span><span data-l="en">Timely Filing Deadline Checker</span></span></a><a href="/chequeo-cumplimiento-auditoria"><span class="rm-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span><span><small><span data-l="es">Chequeo de 2 minutos</span><span data-l="en">2-minute check</span></small><span data-l="es">Chequeo de preparación para auditorías</span><span data-l="en">Audit Readiness Check</span></span></a></div><div><span class="rm-head"><span data-l="es">Descargas gratis</span><span data-l="en">Free downloads</span></span><a href="/evaluacion-cuentas-por-cobrar"><span class="rm-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/ar-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/ar-en-1.jpg" alt="" width="46" height="60"></span><span><small><span data-l="es">Autoevaluación gratuita</span><span data-l="en">Free self-assessment</span></small><span data-l="es">Autoevaluación de Cuentas por Cobrar</span><span data-l="en">A/R Recovery Self-Assessment</span></span></a><a href="/guia-meat-documentacion"><span class="rm-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/meat-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/meat-en-1.jpg" alt="" width="46" height="60"></span><span><small><span data-l="es">Guía de referencia</span><span data-l="en">Reference grid</span></small><span data-l="es">Guía MEAT de Documentación V28</span><span data-l="en">MEAT Documentation Grid (V28)</span></span></a><a href="/telemedicina-solo-audio"><span class="rm-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/tele-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/tele-en-1.jpg" alt="" width="46" height="60"></span><span><small><span data-l="es">Lista de cotejo</span><span data-l="en">Compliance checklist</span></small><span data-l="es">Telemedicina Solo Audio: Lista de Cumplimiento</span><span data-l="en">Audio-Only Telehealth Compliance Checklist</span></span></a><a href="/auditoria-modificador-25"><span class="rm-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/mod25-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/mod25-en-1.jpg" alt="" width="46" height="60"></span><span><small><span data-l="es">Hoja de auditoría</span><span data-l="en">Audit worksheet</span></small><span data-l="es">Hoja de Auditoría del Modificador 25</span><span data-l="en">Modifier 25 Audit Worksheet</span></span></a><a href="/programa-de-cumplimiento-plantilla"><span class="rm-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/cp-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/cp-en-1.jpg" alt="" width="46" height="60"></span><span><small><span data-l="es">Plantilla editable (Word)</span><span data-l="en">Editable template (Word)</span></small><span data-l="es">Plantilla de Programa de Cumplimiento para Prácticas</span><span data-l="en">Practice Compliance Program Template</span></span></a></div></div><a class="rm-all" href="/herramientas"><span data-l="es">Ver todas las herramientas →</span><span data-l="en">See all free tools →</span></a><a class="rm-all" href="/blog"><span data-l="es">Leer el blog →</span><span data-l="en">Read the blog →</span></a></div></details><a class="l" href="/blog">Blog</a><a class="l" href="#preguntas"><span data-l="es">Preguntas</span><span data-l="en">FAQ</span></a>
+ <div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-set="es">ES</button><button type="button" data-set="en">EN</button></div><a class="btn btn-primary btn-sm" href="/evaluacion-cuentas-por-cobrar"><span data-l="es">Autoevaluación gratis</span><span data-l="en">Free self-assessment</span></a></nav></div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+ <div>
+  <span class="eyebrow"><span data-l="es">Facturación · Auditoría · Cumplimiento</span><span data-l="en">Billing · Audit · Compliance</span></span>
+  <h1><span data-l="es">Cobre lo que ya trabajó. <em>Y protéjalo.</em></span><span data-l="en">Get paid for the work you did. <em>Then keep it.</em></span></h1>
+  <p class="lead"><span data-l="es">Recuperamos cuentas por cobrar, apelamos denegaciones y dejamos su documentación lista para cualquier auditoría — facturación y cumplimiento en un solo equipo.</span><span data-l="en">We recover aging A/R, overturn denials, and get your documentation audit-ready — billing and compliance from one team.</span></p>
+  <div class="ctas"><a class="btn btn-primary btn-peek" href="/evaluacion-cuentas-por-cobrar"><span class="bp-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/ar-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/ar-en-1.jpg" alt="" width="46" height="60"></span><span data-l="es">Haga la autoevaluación gratis</span><span data-l="en">Take the free self-assessment</span></a><a class="btn btn-ghost" href="#servicios"><span data-l="es">Ver servicios</span><span data-l="en">See services</span></a></div>
+  <p style="margin-top:10px;font-size:14px;color:var(--muted)"><span data-l="es">15 minutos · Sin datos de pacientes · Sin compromiso</span><span data-l="en">15 minutes · No patient data · No obligation</span></p>
+  <div class="chips" data-l="es"><span class="chip">Medicare Advantage</span><span class="chip">Plan Vital</span><span class="chip">Aseguradoras comerciales</span><span class="chip">HIPAA + BAA</span></div>
+  <div class="chips" data-l="en"><span class="chip">Medicare &amp; Medicare Advantage</span><span class="chip">Commercial payers</span><span class="chip">Medicaid</span><span class="chip">HIPAA + BAA</span></div>
+ </div>
+ <div class="hero-media">
+  <!-- HERO PHOTO: save a real photo as hero.jpg (portrait, about 1600x2000 px, under 400 KB) in the site folder and it appears here automatically -->
+  <img class="hero-photo" src="/hero.jpg" alt="" onload="this.closest('.hero-media').classList.add('has-photo')" onerror="this.remove()">
+  <div class="hero-chart pbi" aria-label="Sample client dashboard with illustrative data">
+   <div class="pbi-top"><span class="pbi-dots"><i></i><i></i><i></i></span><span class="pbi-file"><span data-l="es">Tablero del cliente</span><span data-l="en">Client dashboard</span> · Power BI</span><span class="hc-pill"><span data-l="es">Datos de ejemplo</span><span data-l="en">Sample data</span></span></div>
+   <div class="pbi-tabs"><b><span data-l="es">Resumen</span><span data-l="en">Overview</span></b><span><span data-l="es">Denegaciones</span><span data-l="en">Denials</span></span><span><span data-l="es">Términos</span><span data-l="en">Deadlines</span></span><span><span data-l="es">Trabajo</span><span data-l="en">Work done</span></span></div>
+   <div class="pbi-body">
+    <div class="pbi-h"><span>Sample Family Practice</span><em><span data-l="es">Septiembre 2026</span><span data-l="en">September 2026</span></em></div>
+    <div class="pbi-kpis">
+     <div><span><span data-l="es">Días en A/R</span><span data-l="en">Days in A/R</span></span><b>46</b><i class="up">▼ 11</i></div>
+     <div><span><span data-l="es">A/R +90 días</span><span data-l="en">A/R over 90</span></span><b>31%</b><i class="up">▼ 5 pts</i></div>
+     <div><span><span data-l="es">Denegaciones</span><span data-l="en">Denial rate</span></span><b>7.9%</b><i class="up">▼ 3.6 pts</i></div>
+     <div><span><span data-l="es">Cobrado</span><span data-l="en">Collected</span></span><b>$80K</b><i class="up">▲ 14%</i></div>
+    </div>
+    <div class="pbi-row">
+     <div class="pbi-viz"><span class="pbi-vt"><span data-l="es">Balance por antigüedad</span><span data-l="en">Open balance by age</span></span>
+      <svg viewBox="0 0 200 104" class="pbi-svg"><g fill="#226965"><rect x="8" y="22" width="26" height="66" rx="3"/><rect x="46" y="44" width="26" height="44" rx="3"/><rect x="84" y="58" width="26" height="30" rx="3"/><rect x="122" y="66" width="26" height="22" rx="3" fill="#E6A63C"/><rect x="160" y="52" width="26" height="36" rx="3" fill="#C9573A"/></g>
+       <line x1="2" x2="198" y1="88.5" y2="88.5" stroke="#cfc5b3"/><g class="ax" text-anchor="middle"><text x="21" y="100">0-30</text><text x="59" y="100">31-60</text><text x="97" y="100">61-90</text><text x="135" y="100">91-120</text><text x="173" y="100">120+</text></g></svg></div>
+     <div class="pbi-viz"><span class="pbi-vt"><span data-l="es">Días en A/R por mes</span><span data-l="en">Days in A/R by month</span></span>
+      <svg viewBox="0 0 200 104" class="pbi-svg"><line x1="2" x2="198" y1="40" y2="40" stroke="#E6A63C" stroke-dasharray="4 4"/><text x="196" y="35" text-anchor="end" class="ax"><tspan data-l="es">meta 40</tspan><tspan data-l="en">target 40</tspan></text>
+       <polyline points="14,18 50,24 86,32 122,44 158,52 190,58" fill="none" stroke="#226965" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+       <g fill="#fff" stroke="#226965" stroke-width="2"><circle cx="14" cy="18" r="3.5"/><circle cx="50" cy="24" r="3.5"/><circle cx="86" cy="32" r="3.5"/><circle cx="122" cy="44" r="3.5"/><circle cx="158" cy="52" r="3.5"/><circle cx="190" cy="58" r="3.5"/></g>
+       <line x1="2" x2="198" y1="88.5" y2="88.5" stroke="#cfc5b3"/><g class="ax" text-anchor="middle"><text x="14" y="100"><tspan data-l="es">Abr</tspan><tspan data-l="en">Apr</tspan></text><text x="50" y="100">May</text><text x="86" y="100">Jun</text><text x="122" y="100">Jul</text><text x="158" y="100"><tspan data-l="es">Ago</tspan><tspan data-l="en">Aug</tspan></text><text x="190" y="100">Sep</text></g></svg></div>
+    </div>
+    <div class="pbi-viz pbi-den"><span class="pbi-vt"><span data-l="es">Principales denegaciones</span><span data-l="en">Top denial reasons</span></span>
+     <div class="pbi-bar"><span>CO-16 <span data-l="es">Información incompleta</span><span data-l="en">Missing info</span></span><i style="width:78%"></i></div>
+     <div class="pbi-bar"><span>CO-197 <span data-l="es">Sin autorización</span><span data-l="en">No authorization</span></span><i style="width:52%"></i></div>
+     <div class="pbi-bar"><span>CO-97 <span data-l="es">Incluido en otro servicio</span><span data-l="en">Bundled service</span></span><i style="width:34%"></i></div>
+    </div>
+   </div>
+  </div>
+  <div class="hero-card"><h3><span data-l="es">Dos cosas gratis antes de comprometerse</span><span data-l="en">Two free steps before any commitment</span></h3>
+   <ol>
+    <li><span><b><span data-l="es">Autoevaluación de 15 minutos</span><span data-l="en">15-minute self-assessment</span></b><span data-l="es">Vea la salud de sus cuentas por cobrar con 6 números.</span><span data-l="en">Score your A/R health with six numbers.</span></span></li>
+    <li><span><b><span data-l="es">Revisión gratis de su aging</span><span data-l="en">Free review of your aging report</span></b><span data-l="es">Le decimos qué todavía se puede cobrar y qué está por vencer.</span><span data-l="en">We show what's still collectible and what's about to expire.</span></span></li>
+    <li><span><b><span data-l="es">Usted decide</span><span data-l="en">You decide</span></b><span data-l="es">Si le sirve, trabajamos juntos con BAA firmado.</span><span data-l="en">If it's a fit, we work together under a signed BAA.</span></span></li>
+   </ol>
+  </div>
+ </div>
+</div></section>
+
+<section class="urgent"><div class="wrap">
+ <div><h2><span data-l="es">Cada reclamación tiene fecha de vencimiento.</span><span data-l="en">Every claim has an expiration date.</span></h2>
+  <p class="s"><span data-l="es">Pasado el término, ese dinero casi nunca se recupera — no importa cuánto se trabaje.</span><span data-l="en">Once the window closes, that money is almost never recovered — no matter how hard anyone works it.</span></p>
+  <a class="btn btn-primary btn-peek" href="/evaluacion-cuentas-por-cobrar"><span class="bp-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/ar-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/ar-en-1.jpg" alt="" width="46" height="60"></span><span data-l="es">Vea cuánto está por vencer</span><span data-l="en">See what's about to expire</span></a></div>
+ <div class="facts">
+  <div class="fact"><b>90–180</b><span><span data-l="es">días: término común para radicar con aseguradoras comerciales</span><span data-l="en">days: a common commercial timely-filing window</span></span></div>
+  <div class="fact"><b>12</b><span><span data-l="es">meses: Medicare, desde la fecha de servicio</span><span data-l="en">months: Medicare, from the date of service</span></span></div>
+  <div class="fact"><b>120</b><span><span data-l="es">días: para pedir una redeterminación a Medicare</span><span data-l="en">days: to request a Medicare redetermination</span></span></div>
+  <div class="fact"><b>60</b><span><span data-l="es">días: para devolver un pago en exceso identificado</span><span data-l="en">days: to return an identified Medicare overpayment</span></span></div>
+ </div>
+</div></section>
+
+<section class="systems"><div class="wrap">
+ <span class="lbl"><span data-l="es">Trabajamos dentro de su sistema</span><span data-l="en">We work inside your system</span></span>
+ <!-- SYSTEMS: edit these names to match the systems you actually work in. Use logos only with each vendor's permission. -->
+ <span class="sys">athenahealth</span><span class="sys">eClinicalWorks</span><span class="sys">NextGen</span><span class="sys">Tebra</span><span class="sys">AdvancedMD</span><span class="sys">ModMed</span><span class="sys">Epic</span>
+</div></section>
+
+<section id="servicios" class="alt"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow"><span data-l="es">Servicios</span><span data-l="en">Services</span></span><h2><span data-l="es">Facturación y cumplimiento, bajo un mismo techo</span><span data-l="en">Billing and compliance under one roof</span></h2>
+ <p><span data-l="es">Doce servicios, tres áreas. La mayoría empieza con sus cuentas por cobrar y se queda por el cumplimiento.</span><span data-l="en">Twelve services, three areas. Most practices start with their A/R and stay for the compliance work.</span></p></div>
+ <div class="grid3 tiers"><div class="card pkg tier"><span class="tag"><span data-l="es">Ingresos y cuentas por cobrar</span><span data-l="en">Revenue &amp; A/R</span><span class="premium"><span data-l="es">El punto de partida</span><span data-l="en">Where most start</span></span></span>
+<h3><span data-l="es">Cobre lo que ya trabajó</span><span data-l="en">Get paid for work already done</span></h3><p class="for"><span data-l="es">Resultados visibles en semanas.</span><span data-l="en">Results you can see within weeks.</span></p>
+<ul data-l="es"><li><b>Limpieza de cuentas viejas</b><span>Trabajamos reclamaciones viejas antes de que venza el término.</span></li><li><b>Manejo del ciclo de ingresos (RCM)</b><span>Su facturación de principio a fin: cargos, reclamaciones, pagos y seguimiento.</span></li><li><b>Codificación</b><span>Codificadores certificados; reclamaciones correctas desde el primer envío.</span></li><li><b>Manejo de denegaciones</b><span>Apelamos y corregimos la causa para que no se repita.</span></li></ul><ul data-l="en"><li><b>Aging A/R cleanup</b><span>Old claims worked before filing deadlines close.</span></li><li><b>RCM management</b><span>Your billing cycle run end to end: charges, claims, posting, follow-up.</span></li><li><b>Coding</b><span>Certified coders and claims that go out right the first time.</span></li><li><b>Denial management</b><span>Appeals plus root-cause fixes so denials stop repeating.</span></li></ul>
+<a class="btn btn-ghost btn-sm" href="/evaluacion-cuentas-por-cobrar"><span data-l="es">Empiece con la autoevaluación</span><span data-l="en">Start with the self-assessment</span></a></div><div class="card pkg tier featured"><span class="tag"><span data-l="es">Cumplimiento y riesgo</span><span data-l="en">Compliance &amp; Risk</span><span class="premium"><span data-l="es">Servicio principal</span><span data-l="en">Core service</span></span></span>
+<h3><span data-l="es">Que lo que cobra se sostenga</span><span data-l="en">Make sure what you bill holds up</span></h3><p class="for"><span data-l="es">El trabajo que protege sus ingresos en una auditoría.</span><span data-l="en">The work that protects your revenue in an audit.</span></p>
+<ul data-l="es"><li><b>Preparación para RADV</b><span>Simulacros y análisis de brechas antes de que CMS lo pida.</span></li><li><b>Cumplimiento HCC</b><span>Ajuste por riesgo bien capturado y sustentado (V28, MEAT).</span></li><li><b>HIPAA</b><span>Políticas de privacidad y seguridad, análisis de riesgo y preparación ante brechas.</span></li><li><b>Programa de cumplimiento</b><span>Un programa escrito basado en los siete elementos de la OIG.</span></li><li><b>Cumplimiento BLS</b><span>Certificaciones de soporte vital básico del personal al día.</span></li></ul><ul data-l="en"><li><b>RADV readiness</b><span>Mock reviews and gap analysis before CMS comes asking.</span></li><li><b>HCC compliance</b><span>Risk adjustment captured right and supported (V28, MEAT).</span></li><li><b>HIPAA</b><span>Privacy and security policies, risk analysis and breach readiness.</span></li><li><b>Compliance program development</b><span>A written program built on the OIG's seven elements.</span></li><li><b>BLS compliance</b><span>Staff Basic Life Support certifications tracked and kept current.</span></li></ul>
+<a class="btn btn-ghost btn-sm" href="#contacto"><span data-l="es">Pedir una propuesta</span><span data-l="en">Request a proposal</span></a></div><div class="card pkg tier"><span class="tag"><span data-l="es">Apoyo a la práctica</span><span data-l="en">Practice Support</span><span class="premium"><span data-l="es">Para crecer</span><span data-l="en">For growth</span></span></span>
+<h3><span data-l="es">Abra, crezca y organice su práctica</span><span data-l="en">Open, grow and run your practice</span></h3><p class="for"><span data-l="es">Para prácticas nuevas, en compra o en expansión.</span><span data-l="en">For new, acquired or growing practices.</span></p>
+<ul data-l="es"><li><b>Apertura de prácticas</b><span>Abrir o comprar una práctica: revisión previa, flujos y montaje.</span></li><li><b>Credencialización</b><span>Inscripción y credencialización de sus proveedores con las aseguradoras.</span></li><li><b>Adiestramiento y educación</b><span>Codificación, documentación y cumplimiento para proveedores y personal.</span></li><li><b>Contabilidad para salud</b><span>Contabilidad e informes financieros hechos para prácticas médicas.</span></li></ul><ul data-l="en"><li><b>Practice startups</b><span>Opening or buying a practice: due diligence, workflows and setup.</span></li><li><b>Credentialing</b><span>Payer enrollment and credentialing for your providers.</span></li><li><b>Training & education</b><span>Coding, documentation and compliance training for providers and staff.</span></li><li><b>Healthcare accounting</b><span>Bookkeeping and financial reporting built for medical practices.</span></li></ul>
+<a class="btn btn-ghost btn-sm" href="#contacto"><span data-l="es">Hablemos de su proyecto</span><span data-l="en">Talk about your project</span></a></div></div>
+</div></section>
+
+
+<section id="transicion" class="transition"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow"><span data-l="es">Programa de Transición Sin Complicaciones</span><span data-l="en">Seamless Transition Program</span></span>
+  <h2><span data-l="es">¿Quiere cambiar de compañía de facturación? Nosotros hacemos la parte difícil.</span><span data-l="en">Switching billing companies? We do the hard part.</span></h2>
+  <p><span data-l="es">Sabemos por qué muchas prácticas se quedan con una compañía que no les funciona: cambiar asusta. Reclamaciones a medio camino, accesos, contratos. Nuestro programa organiza todo el proceso para que sus cobros sigan en movimiento.</span><span data-l="en">We know why practices stay with a vendor that isn't working: switching is scary. Claims mid-cycle, system access, contracts. Our program runs the whole move so your revenue keeps flowing.</span></p></div>
+ <ol class="tsteps" data-l="es">
+  <li><div><b>Diagnóstico</b><span>Revisamos su contrato actual, el término de aviso y todo lo que está a mitad de ciclo.</span></div></li>
+  <li><div><b>Montaje en paralelo</b><span>Preparamos todo de nuestro lado antes de mover nada: accesos, flujos, tarifario y portales.</span></div></li>
+  <li><div><b>Plan de corte</b><span>Definimos, con fecha, qué reclamaciones termina su compañía actual y cuáles pasan a nosotros.</span></div></li>
+  <li><div><b>Entrega ordenada</b><span>Recibimos accesos, cuentas en proceso y reclamaciones abiertas, con un inventario documentado.</span></div></li>
+  <li><div><b>Arranque y monitoreo</b><span>Vigilamos de cerca el primer ciclo de facturación para que ningún ingreso se quede detenido.</span></div></li>
+ </ol>
+ <ol class="tsteps" data-l="en">
+  <li><div><b>Discovery</b><span>We review your current vendor contract, notice period and everything that's mid-cycle.</span></div></li>
+  <li><div><b>Parallel setup</b><span>We build everything on our side before anything moves: access, workflows, fee schedule, payer portals.</span></div></li>
+  <li><div><b>Claims cutoff plan</b><span>We map, by date, which claims your current vendor finishes and which move to us — so nothing falls through the cracks.</span></div></li>
+  <li><div><b>Clean handoff</b><span>System access, in-progress A/R and open claims transfer with a documented inventory.</span></div></li>
+  <li><div><b>Go-live &amp; monitor</b><span>We watch your first billing cycle closely so no revenue stalls.</span></div></li>
+ </ol>
+ <div class="tpromise">
+  <p><span data-l="es"><b>Respetamos su contrato actual.</b> Planificamos la fecha de cambio alrededor de su término de aviso para proteger sus ingresos durante la transición — sin dejar cabos sueltos con su compañía actual.</span><span data-l="en"><b>We respect your current contract.</b> We plan the cutover around your notice period to protect your revenue during the overlap — with no loose ends left with your current vendor.</span></p>
+  <a class="btn btn-ghost" href="#contacto"><span data-l="es">Hablemos de su cambio</span><span data-l="en">Talk about switching</span></a>
+ </div>
+</div></section>
+
+<section class="why"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow"><span data-l="es">¿Por qué ProCare?</span><span data-l="en">Why ProCare</span></span><h2><span data-l="es">Hecho para la realidad de su oficina</span><span data-l="en">Built for how your office actually runs</span></h2></div>
+ <div class="grid3" data-l="es"><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></div><h3>Conocemos a sus aseguradoras</h3><p>Medicare Advantage, Plan Vital y planes comerciales — sabemos cómo se reclama, se apela y se le da seguimiento a cada una.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h9M8.5 3v2M6 5c0 4 3 7 6 8M11 5c0 4-3 8-7 9"/><path d="M13 21l4-10 4 10M14.5 17.5h5"/></svg></div><h3>Trabajamos en sus sistemas</h3><p>De forma remota, dentro de su sistema de facturación y los portales de las aseguradoras. Nada que instalar.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg></div><h3>Supervisión certificada</h3><p>Revisión de calidad con credenciales CPC, CRC y CPMA de AAPC.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3>HIPAA primero</h3><p>Firmamos un BAA antes de tocar un solo dato. Nada de información de pacientes por email.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Solo aseguradoras</h3><p>No llamamos a sus pacientes para cobrarles. Protegemos la relación que usted construyó.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div><h3>Resultados medibles</h3><p>Informes semanales y métricas claras: lo que se cobró, lo que falta y por qué.</p></div></div>
+ <div class="grid3" data-l="en"><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></div><h3>Payer-savvy follow-up</h3><p>We know how each payer handles reconsiderations, appeals and corrected claims — and we stay on them until it's resolved.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h9M8.5 3v2M6 5c0 4 3 7 6 8M11 5c0 4-3 8-7 9"/><path d="M13 21l4-10 4 10M14.5 17.5h5"/></svg></div><h3>Works inside your systems</h3><p>Fully remote, inside your PM system and payer portals. Nothing to install, no new software for your staff.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg></div><h3>Certified oversight</h3><p>Quality review backed by AAPC CPC, CRC and CPMA credentials.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3>HIPAA-first</h3><p>BAA signed before we touch any data. No PHI over email, ever.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Payer-side only</h3><p>We never call your patients for balances. Your patient relationships stay yours.</p></div><div class="card"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div><h3>Measurable results</h3><p>Weekly reporting and clear KPIs: what was collected, what's pending, and why.</p></div></div>
+</div></section>
+
+<section id="herramientas" class="tools-sec"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow"><span data-l="es">Calculadoras gratis</span><span data-l="en">Free calculators</span></span>
+ <h2><span data-l="es">¿Cuánto le cuestan las denegaciones? Póngale números.</span><span data-l="en">What are denials really costing you? Run the numbers.</span></h2>
+ <p><span data-l="es">Cambie cualquier número y vea el resultado al instante. Valores iniciales con fuentes del BLS y MGMA.</span><span data-l="en">Change any number and watch the result update. Starting values sourced from the BLS and MGMA.</span></p></div>
+ <div class="tool" data-tool="den">
+ <div class="tool-in">
+  <h3><span data-l="es">Sus números</span><span data-l="en">Your numbers</span></h3>
+  <div class="tf-grid">
+   <div class="tf"><label for="dn_c"><span data-l="es">Reclamaciones enviadas por mes</span><span data-l="en">Claims submitted per month</span></label><div class="tf-in"><input id="dn_c" type="number" inputmode="decimal" min="0" step="10" value="1200"></div></div>
+   <div class="tf"><label for="dn_d"><span data-l="es">Tasa de denegación (primer envío)</span><span data-l="en">First-pass denial rate</span></label><div class="tf-in has-suf"><input id="dn_d" type="number" inputmode="decimal" min="0" step="0.5" value="10"><span class="suf">%</span></div></div>
+   <div class="tf"><label for="dn_p"><span data-l="es">Pago esperado promedio por reclamación</span><span data-l="en">Average expected payment per claim</span></label><div class="tf-in has-pre"><span class="pre">$</span><input id="dn_p" type="number" inputmode="decimal" min="0" step="1" value="95"></div></div>
+   <div class="tf"><label for="dn_m"><span data-l="es">Minutos para trabajar una denegación</span><span data-l="en">Minutes to work one denial</span></label><div class="tf-in"><input id="dn_m" type="number" inputmode="decimal" min="0" step="1" value="30"></div></div>
+   <div class="tf"><label for="dn_w"><span data-l="es">Salario por hora del personal</span><span data-l="en">Staff hourly wage</span></label><div class="tf-in has-pre"><span class="pre">$</span><input id="dn_w" type="number" inputmode="decimal" min="0" step="0.01" value="24.59"></div><small class="hint"><span data-l="es">Mediana BLS, especialistas en récords médicos (mayo 2025).</span><span data-l="en">BLS median, medical records specialists (May 2025).</span></small></div>
+   <div class="tf"><label for="dn_t"><span data-l="es">Meta de tasa de denegación</span><span data-l="en">Target denial rate</span></label><div class="tf-in has-suf"><input id="dn_t" type="number" inputmode="decimal" min="0" step="0.5" value="5"><span class="suf">%</span></div></div>
+  </div>
+  <details class="assump"><summary><span data-l="es">Ajustar supuestos</span><span data-l="en">Adjust assumptions</span></summary>
+   <div class="tf-grid">
+    <div class="tf"><label for="dn_b"><span data-l="es">Beneficios como % de la compensación total</span><span data-l="en">Benefits as % of total compensation</span></label><div class="tf-in has-suf"><input id="dn_b" type="number" inputmode="decimal" min="0" step="any" value="30"><span class="suf">%</span></div><small class="hint"><span data-l="es">BLS: 30% en la industria privada (junio 2026).</span><span data-l="en">BLS: 30% in private industry (June 2026).</span></small></div>
+    <div class="tf"><label for="dn_u"><span data-l="es">Denegaciones que nunca se trabajan</span><span data-l="en">Denials never reworked</span></label><div class="tf-in has-suf"><input id="dn_u" type="number" inputmode="decimal" min="0" step="any" value="50"><span class="suf">%</span></div><small class="hint"><span data-l="es">MGMA: más del 50% nunca se trabajan.</span><span data-l="en">MGMA: more than 50% are never reworked.</span></small></div>
+    <div class="tf"><label for="dn_r"><span data-l="es">De esas, cuántas se pagarían si se apelan</span><span data-l="en">Of those, share that would pay if worked</span></label><div class="tf-in has-suf"><input id="dn_r" type="number" inputmode="decimal" min="0" step="any" value="65"><span class="suf">%</span></div><small class="hint"><span data-l="es">Cerca de dos tercios de las denegaciones son recuperables.</span><span data-l="en">About two-thirds of denials are recoverable.</span></small></div>
+   </div>
+  </details>
+ </div>
+ <div class="tool-out" aria-live="polite">
+  <span class="out-k"><span data-l="es">Hoy</span><span data-l="en">Today</span></span>
+  <div class="kpis">
+   <div class="kpi "><b id="dn_o_n">—</b><span><span data-l="es">denegaciones al mes</span><span data-l="en">denials per month</span></span></div>
+   <div class="kpi "><b id="dn_o_h">—</b><span><span data-l="es">horas de personal al año en retrabajo</span><span data-l="en">staff hours a year on rework</span></span></div>
+   <div class="kpi gold"><b id="dn_o_l">—</b><span><span data-l="es">costo de mano de obra al año (con beneficios)</span><span data-l="en">labor cost a year (with benefits)</span></span></div>
+   <div class="kpi gold"><b id="dn_o_rev">—</b><span><span data-l="es">ingresos que nunca se reclaman al año</span><span data-l="en">revenue never pursued per year</span></span></div>
+  </div>
+  <span class="out-k" style="margin-top:18px"><span data-l="es">Si su tasa baja a la meta</span><span data-l="en">If your rate drops to target</span></span>
+  <div class="kpis">
+   <div class="kpi "><b id="dn_o_hs">—</b><span><span data-l="es">horas de personal ahorradas al año</span><span data-l="en">staff hours saved a year</span></span></div>
+   <div class="kpi gold"><b id="dn_o_ls">—</b><span><span data-l="es">en mano de obra ahorrada al año</span><span data-l="en">labor dollars saved a year</span></span></div>
+  </div>
+  <div class="verdict" id="dn_v"></div>
+ </div>
+</div>
+ <div class="t-cta"><a class="btn btn-primary" href="/calculadora-denegaciones-tiempo-personal#get-results"><span data-l="es">Envíenme estos resultados</span><span data-l="en">Email me these results</span></a><span><a href="/calculadora-denegaciones-tiempo-personal"><span data-l="es">Cómo se calcula →</span><span data-l="en">How it's calculated →</span></a></span></div>
+ <h3 class="more-res"><span data-l="es">Más herramientas</span><span data-l="en">More tools</span></h3>
+ <div class="tgrid"><a class="card tcard" href="/calculadora-recuperacion-cuentas-por-cobrar"><span class="kind"><span data-l="es">Calculadora</span><span data-l="en">Calculator</span></span><h3><span data-l="es">Calculadora de recuperación de cuentas por cobrar</span><span data-l="en">A/R Recovery Calculator</span></h3><p><span data-l="es">Vea sus días en A/R, cuánto efectivo está atascado y cuánto valor pierde cada mes que una cuenta envejece.</span><span data-l="en">See your days in A/R, how much cash is stuck, and how much value you lose each month a claim ages.</span></p><span class="go"><span data-l="es">Abrir →</span><span data-l="en">Open →</span></span></a><a class="card tcard" href="/verificador-termino-de-radicacion"><span class="kind"><span data-l="es">Verificador</span><span data-l="en">Checker</span></span><h3><span data-l="es">Verificador de término de radicación</span><span data-l="en">Timely Filing Deadline Checker</span></h3><p><span data-l="es">Ponga la fecha de servicio y vea cuántos días le quedan para radicar o apelar antes de perder el pago.</span><span data-l="en">Enter a date of service and see how many days are left to file or appeal before the money is gone.</span></p><span class="go"><span data-l="es">Abrir →</span><span data-l="en">Open →</span></span></a><a class="card tcard" href="/chequeo-cumplimiento-auditoria"><span class="kind"><span data-l="es">Chequeo de 2 minutos</span><span data-l="en">2-minute check</span></span><h3><span data-l="es">Chequeo de preparación para auditorías</span><span data-l="en">Audit Readiness Check</span></h3><p><span data-l="es">10 preguntas sobre codificación, ajuste por riesgo, HIPAA y programa de cumplimiento. Vea dónde está expuesto.</span><span data-l="en">10 questions across coding, risk adjustment, HIPAA and your compliance program. See where you're exposed.</span></p><span class="go"><span data-l="es">Abrir →</span><span data-l="en">Open →</span></span></a></div>
+</div></section>
+
+<section class="blog-sec"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow">Blog</span><h2><span data-l="es">Guías prácticas, sin rodeos</span><span data-l="en">Practical guides, no fluff</span></h2></div>
+ <div class="tgrid"><a class="card bcard" href="/blog/terminos-de-radicacion-timely-filing"><span class="kind"><span data-l="es">Cuentas por cobrar</span><span data-l="en">Accounts receivable</span></span><h3><span data-l="es">Términos de radicación: las fechas que borran sus ingresos sin avisar</span><span data-l="en">Timely filing limits: the deadlines that quietly erase your revenue</span></h3><p><span data-l="es">Medicare, Medicare Advantage, Medicaid y planes comerciales tienen términos distintos para radicar y apelar. Así se pierden las reclamaciones y cómo evitarlo.</span><span data-l="en">Medicare, Medicare Advantage, Medicaid and commercial plans all set different filing and appeal deadlines. Here's how claims expire and how to stop it.</span></p><span class="go"><span data-l="es">Leer →</span><span data-l="en">Read →</span></span></a><a class="card bcard" href="/blog/dias-en-cuentas-por-cobrar-days-in-ar"><span class="kind"><span data-l="es">Indicadores</span><span data-l="en">Metrics</span></span><h3><span data-l="es">Días en cuentas por cobrar: cómo calcularlo, qué es un buen número y cómo bajarlo</span><span data-l="en">Days in A/R: how to calculate it, what a good number is, and how to lower it</span></h3><p><span data-l="es">La fórmula de días en A/R con un ejemplo real, los puntos de referencia comunes y las cinco palancas que más lo bajan.</span><span data-l="en">The days-in-A/R formula with a worked example, common benchmarks, and the five levers that bring it down fastest.</span></p><span class="go"><span data-l="es">Leer →</span><span data-l="en">Read →</span></span></a><a class="card bcard" href="/blog/telemedicina-solo-audio-ajuste-por-riesgo"><span class="kind"><span data-l="es">Ajuste por riesgo</span><span data-l="en">Risk adjustment</span></span><h3><span data-l="es">Telemedicina solo por audio y ajuste por riesgo: por qué esos diagnósticos no cuentan</span><span data-l="en">Audio-only telehealth and risk adjustment: why those diagnoses don't count</span></h3><p><span data-l="es">Una visita por teléfono puede pagarse y aun así no servir para el ajuste por riesgo de Medicare Advantage. Cómo documentar, marcar y recapturar.</span><span data-l="en">A phone visit can be payable and still not count for Medicare Advantage risk adjustment. How to document it, flag it and recapture the condition.</span></p><span class="go"><span data-l="es">Leer →</span><span data-l="en">Read →</span></span></a></div>
+ <p style="margin-top:18px"><a class="btn btn-ghost btn-sm" href="/blog"><span data-l="es">Ver todos los artículos</span><span data-l="en">See all articles</span></a></p>
+</div></section>
+<section id="recursos" class="alt res"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow"><span data-l="es">Recursos gratis</span><span data-l="en">Free resources</span></span><h2><span data-l="es">Herramientas de verdad, no folletos</span><span data-l="en">Real tools, not brochures</span></h2>
+ <p><span data-l="es">Lo mismo que usamos en nuestras revisiones, para que su equipo lo use hoy.</span><span data-l="en">The same tools we use in paid reviews — free for your team to use today.</span></p></div>
+ <div class="featured-peek"><div class="peek" data-l="es" data-pages='["/downloads/preview/ar-es-1.jpg", "/downloads/preview/ar-es-2.jpg", "/downloads/preview/ar-es-3.jpg"]' data-free="2">
+  <button type="button" class="pk-cover" data-i="0" aria-label="Ver por dentro">
+    <span class="pk-stack"></span><img src="/downloads/preview/ar-es-1.jpg" alt="Portada de Autoevaluación de Cuentas por Cobrar" width="300" height="388">
+    <span class="pk-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Ver por dentro</span>
+  </button>
+  <div class="pk-side">
+    <h3 class="pk-title">Autoevaluación de Cuentas por Cobrar</h3>
+    <span class="pk-meta">PDF de 3 páginas · Gratis</span>
+    <ul class="pk-val"><li>Las mismas 6 métricas que usamos en una revisión pagada</li><li>Vea qué reclamaciones siguen dentro del término para cobrarse</li><li>Hecha por una auditora certificada CPC, CRC y CPMA</li></ul>
+    <div class="pk-thumbs"><button type="button" class="pk-th" data-i="1" aria-label="Página 2"><img src="/downloads/preview/ar-es-2.jpg" alt="" loading="lazy" width="72" height="93"></button><button type="button" class="pk-th pk-lock" data-i="2" aria-label="Páginas bloqueadas"><img src="/downloads/preview/ar-es-3.jpg" alt="" loading="lazy" width="72" height="93"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>+1</b></span></button></div>
+    <a class="btn btn-primary pk-get" href="/evaluacion-cuentas-por-cobrar">Obténgala gratis</a>
+  </div>
+</div><div class="peek" data-l="en" data-pages='["/downloads/preview/ar-en-1.jpg", "/downloads/preview/ar-en-2.jpg", "/downloads/preview/ar-en-3.jpg"]' data-free="2">
+  <button type="button" class="pk-cover" data-i="0" aria-label="Look inside">
+    <span class="pk-stack"></span><img src="/downloads/preview/ar-en-1.jpg" alt="Cover of A/R Recovery Self-Assessment" width="300" height="388">
+    <span class="pk-tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Look inside</span>
+  </button>
+  <div class="pk-side">
+    <h3 class="pk-title">A/R Recovery Self-Assessment</h3>
+    <span class="pk-meta">3-page PDF · Free</span>
+    <ul class="pk-val"><li>The same 6 numbers we use in a paid A/R review</li><li>See which unpaid claims are still inside the filing window</li><li>Built by a CPC, CRC &amp; CPMA certified auditor</li></ul>
+    <div class="pk-thumbs"><button type="button" class="pk-th" data-i="1" aria-label="Page 2"><img src="/downloads/preview/ar-en-2.jpg" alt="" loading="lazy" width="72" height="93"></button><button type="button" class="pk-th pk-lock" data-i="2" aria-label="Locked pages"><img src="/downloads/preview/ar-en-3.jpg" alt="" loading="lazy" width="72" height="93"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>+1</b></span></button></div>
+    <a class="btn btn-primary pk-get" href="/evaluacion-cuentas-por-cobrar">Get it free</a>
+  </div>
+</div><dialog class="pk-view" id="pk-view" aria-label="Vista previa">
+  <div class="pk-bar"><span class="pk-count"></span><button type="button" class="pk-x" aria-label="Close">&times;</button></div>
+  <div class="pk-stage"><button type="button" class="pk-nav pk-prev" aria-label="Previous">&#8249;</button>
+    <div class="pk-pg"><img alt=""><div class="pk-gate"><div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><h3><span data-l="es">El resto está en su copia gratis</span><span data-l="en">The rest is in your free copy</span></h3>
+      <p><span data-l="es">Llene el formulario y descárguela al instante.</span><span data-l="en">Fill out the form and download it instantly.</span></p>
+      <a class="btn btn-primary btn-sm" href="/evaluacion-cuentas-por-cobrar" data-close><span data-l="es">Envíenme la autoevaluación</span><span data-l="en">Send me the self-assessment</span></a></div></div></div>
+    <button type="button" class="pk-nav pk-next" aria-label="Next">&#8250;</button></div>
+</dialog></div>
+ <h3 class="more-res"><span data-l="es">Más recursos gratis</span><span data-l="en">More free resources</span></h3>
+ <div class="grid2"><a class="card has-cover" href="/guia-meat-documentacion"><span class="res-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/meat-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/meat-en-1.jpg" alt="" width="46" height="60"></span><span class="kind"><span data-l="es">Guía de referencia</span><span data-l="en">Reference grid</span></span>
+<h3><span data-l="es">Guía MEAT de Documentación V28</span><span data-l="en">MEAT Documentation Grid (V28)</span></h3>
+<p><span data-l="es">Diabetes, CHF, ERC, obesidad mórbida, EPOC y depresión mayor</span><span data-l="en">Diabetes, CHF, CKD, morbid obesity, COPD and major depression</span></p><span class="go"><span data-l="es">Descargar gratis →</span><span data-l="en">Free download →</span></span></a><a class="card has-cover" href="/telemedicina-solo-audio"><span class="res-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/tele-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/tele-en-1.jpg" alt="" width="46" height="60"></span><span class="kind"><span data-l="es">Lista de cotejo</span><span data-l="en">Compliance checklist</span></span>
+<h3><span data-l="es">Telemedicina Solo Audio: Lista de Cumplimiento</span><span data-l="en">Audio-Only Telehealth Compliance Checklist</span></h3>
+<p><span data-l="es">La regla de CMS explicada en lenguaje sencillo</span><span data-l="en">The CMS rule in plain language</span></p><span class="go"><span data-l="es">Descargar gratis →</span><span data-l="en">Free download →</span></span></a><a class="card has-cover" href="/auditoria-modificador-25"><span class="res-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/mod25-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/mod25-en-1.jpg" alt="" width="46" height="60"></span><span class="kind"><span data-l="es">Hoja de auditoría</span><span data-l="en">Audit worksheet</span></span>
+<h3><span data-l="es">Hoja de Auditoría del Modificador 25</span><span data-l="en">Modifier 25 Audit Worksheet</span></h3>
+<p><span data-l="es">La regla de CPT y CMS/NCCI en una página</span><span data-l="en">The CPT and CMS/NCCI rule on one page</span></p><span class="go"><span data-l="es">Descargar gratis →</span><span data-l="en">Free download →</span></span></a><a class="card has-cover" href="/programa-de-cumplimiento-plantilla"><span class="res-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/cp-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/cp-en-1.jpg" alt="" width="46" height="60"></span><span class="kind"><span data-l="es">Plantilla editable (Word)</span><span data-l="en">Editable template (Word)</span></span>
+<h3><span data-l="es">Plantilla de Programa de Cumplimiento para Prácticas</span><span data-l="en">Practice Compliance Program Template</span></h3>
+<p><span data-l="es">Los siete elementos de la OIG, uno por sección</span><span data-l="en">The OIG's seven elements, one per section</span></p><span class="go"><span data-l="es">Descargar gratis →</span><span data-l="en">Free download →</span></span></a></div>
+</div></section>
+
+<section id="preguntas" class="faq"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow"><span data-l="es">Preguntas</span><span data-l="en">FAQ</span></span><h2><span data-l="es">Preguntas frecuentes</span><span data-l="en">Common questions</span></h2></div>
+ <details><summary><span data-l="es">¿Necesitan acceso a nuestro sistema para empezar?</span><span data-l="en">Do you need access to our system to start?</span></summary><p><span data-l="es">No. Para la evaluación inicial solo necesitamos un informe de antigüedad sin nombres de pacientes. El acceso al sistema llega después, con un BAA firmado.</span><span data-l="en">No. For the free review we only need a de-identified aging report. System access comes later, after a signed BAA.</span></p></details><details><summary><span data-l="es">¿Le cobran a nuestros pacientes?</span><span data-l="en">Do you collect from our patients?</span></summary><p><span data-l="es">No. Trabajamos solo con aseguradoras. El cobro a pacientes no está incluido en ningún plan.</span><span data-l="en">No. We work payer-side only. Patient balance collection isn't part of any package.</span></p></details><details><summary><span data-l="es">¿Con qué prácticas trabajan?</span><span data-l="en">What kinds of practices do you work with?</span></summary><p><span data-l="es">Prácticas de atención primaria y especialidades. Trabajamos de forma remota, dentro de su sistema de facturación y los portales de las aseguradoras.</span><span data-l="en">Primary care and specialty practices. We work remotely, inside your PM system and payer portals.</span></p></details><details><summary><span data-l="es">¿Solo hacen facturación?</span><span data-l="en">Do you only do billing?</span></summary><p><span data-l="es">No. También hacemos preparación para RADV, cumplimiento HCC, HIPAA, programas de cumplimiento, cumplimiento BLS, apertura de prácticas, credencialización, adiestramiento y contabilidad para salud.</span><span data-l="en">No. We also provide RADV readiness, HCC compliance, HIPAA, compliance program development, BLS compliance, practice startups, credentialing, training and education, and healthcare accounting.</span></p></details><details><summary><span data-l="es">¿Ayudan a prácticas nuevas o a quien compra una práctica?</span><span data-l="en">Do you help new practices or practice buyers?</span></summary><p><span data-l="es">Sí. Con la apertura de prácticas le ayudamos con la revisión antes de comprar, el montaje de la facturación, la credencialización, HIPAA y el programa de cumplimiento desde el día uno.</span><span data-l="en">Yes. Practice startups covers pre-purchase due diligence, billing setup, credentialing, HIPAA and a compliance program from day one.</span></p></details><details><summary><span data-l="es">¿Qué pasa con el contrato de mi compañía de facturación actual?</span><span data-l="en">What about the contract with my current billing company?</span></summary><p><span data-l="es">Lo revisamos con usted al principio. La decisión y el aviso de terminación son suyos; nosotros planificamos la fecha de cambio alrededor de su término de aviso para que sus cobros no se detengan y no queden reclamaciones sin dueño.</span><span data-l="en">We review it with you up front. The decision and the termination notice are yours; we plan the cutover date around your notice period so collections don't stall and no claim is left without an owner.</span></p></details><details><summary><span data-l="es">¿Cuánto cuesta?</span><span data-l="en">How much does it cost?</span></summary><p><span data-l="es">Depende del volumen y del alcance. Empezamos con una evaluación gratis y le damos una propuesta clara, sin sorpresas.</span><span data-l="en">It depends on volume and scope. We start with a free review and give you a clear written proposal — no surprises.</span></p></details>
+</div></section>
+
+<section class="team-sec"><div class="wrap">
+ <div class="sec-head"><span class="eyebrow"><span data-l="es">Quién le atiende</span><span data-l="en">Who you'll work with</span></span>
+ <h2><span data-l="es">Trabaja directamente con nosotras. Sin centros de llamadas, sin traspasos.</span><span data-l="en">You work directly with us. No call centers, no handoffs.</span></h2></div>
+ <div class="tm-grid"><div class="tm"><img src="/team/josie-santiago-400.jpg" alt="Joselyn Santiago" width="132" height="132" loading="lazy">
+<div><h3>Joselyn Santiago</h3><span class="tm-t"><span data-l="es">Principal, Operaciones de la Práctica</span><span data-l="en">Principal, Practice Operations</span></span><p><span data-l="es">Ha trabajado la práctica de punta a punta: autorizaciones, elegibilidad, codificación quirúrgica y posteo de pagos. Se asegura de que los arreglos se queden.</span><span data-l="en">Has worked the practice end to end: authorizations, eligibility, surgical coding and payment posting. She makes sure the fixes stick.</span></p></div></div><div class="tm"><img src="/team/sandra-santiago-400.jpg" alt="Sandra Santiago" width="132" height="132" loading="lazy">
+<div><h3>Sandra Santiago</h3><span class="tm-t"><span data-l="es">Directora, Cumplimiento y Auditoría</span><span data-l="en">Director, Compliance & Audit</span></span><span class="tm-c">CPC · CRC · CPMA</span><p><span data-l="es">Audita la codificación y la documentación como lo hacen las aseguradoras y CMS, para encontrar los problemas antes que una auditoría.</span><span data-l="en">Audits coding and documentation the way payers and CMS do, so problems get caught before an audit does.</span></p></div></div></div>
+ <p style="margin-top:22px"><a class="btn btn-primary btn-peek" href="/evaluacion-cuentas-por-cobrar"><span class="bp-cover" aria-hidden="true"><img data-l="es" src="/downloads/preview/ar-es-1.jpg" alt="" width="46" height="60"><img data-l="en" src="/downloads/preview/ar-en-1.jpg" alt="" width="46" height="60"></span><span data-l="es">Haga su chequeo gratis de A/R</span><span data-l="en">Get your free A/R check</span></a></p>
+</div></section>
+<section id="contacto" class="alt contact"><div class="wrap">
+ <div class="side">
+  <span class="eyebrow"><span data-l="es">Contacto</span><span data-l="en">Contact</span></span>
+  <h2 style="font-size:clamp(30px,3.8vw,42px);margin:10px 0 14px"><span data-l="es">Hablemos de su práctica</span><span data-l="en">Let's talk about your practice</span></h2>
+  <p><span data-l="es">Cuéntenos un poco de su práctica y le respondemos con los próximos pasos.</span><span data-l="en">Tell us a little about your practice and we'll reply with next steps.</span></p>
+  <p class="mail"><a href="mailto:info@procarepr.com">info@procarepr.com</a></p>
+  <!-- PHONE: when the business line is ready, add it here, e.g. <p class="mail"><a href="tel:+17870000000">(787) 000-0000</a></p> -->
+ </div>
+ <div class="card">
+  <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-ok="ok-contact">
+   <input type="hidden" name="form-name" value="contact"><input type="hidden" name="language_seen" value="Español"><input type="hidden" name="traffic_source" value="direct"><p class="hidden"><label>No llenar / Do not fill: <input name="bot-field"></label></p>
+   <div class="row"><div class="field"><label for="name"><span data-l="es">Nombre</span><span data-l="en">Name</span></label><input id="name" name="name" type="text" required autocomplete="name" placeholder="María Torres" data-ph-es="María Torres" data-ph-en="Maria Torres"></div><div class="field"><label for="practice"><span data-l="es">Práctica</span><span data-l="en">Practice</span></label><input id="practice" name="practice" type="text" required autocomplete="organization" placeholder="Centro Médico del Norte" data-ph-es="Centro Médico del Norte" data-ph-en="Riverside Family Practice"></div></div>
+   <div class="row"><div class="field"><label for="email"><span data-l="es">Email</span><span data-l="en">Email</span></label><input id="email" name="email" type="email" required autocomplete="email" placeholder="maria@sucentro.com" data-ph-es="maria@sucentro.com" data-ph-en="maria@riversidemd.com"></div><div class="field"><label for="phone"><span data-l="es">Teléfono</span><span data-l="en">Phone</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(787) 555-0100" data-ph-es="(787) 555-0100" data-ph-en="(407) 555-0100"></div></div>
+   <div class="row">
+    <div class="field"><label for="service"><span data-l="es">Le interesa</span><span data-l="en">Interested in</span></label><select id="service" name="service"><option value="" data-es="Seleccione" data-en="Select one">Seleccione</option><option value="Revenue & A/R" data-es="Ingresos y cuentas por cobrar" data-en="Revenue & A/R">Ingresos y cuentas por cobrar</option><option value="Compliance & Risk" data-es="Cumplimiento y riesgo" data-en="Compliance & Risk">Cumplimiento y riesgo</option><option value="Practice Support" data-es="Apoyo a la práctica (apertura, credencialización, adiestramiento, contabilidad)" data-en="Practice Support (startups, credentialing, training, accounting)">Apoyo a la práctica (apertura, credencialización, adiestramiento, contabilidad)</option><option value="Seamless Transition Program" data-es="Cambiar de compañía de facturación (Programa de Transición)" data-en="Switching billing companies (Seamless Transition Program)">Cambiar de compañía de facturación (Programa de Transición)</option><option value="Not sure" data-es="No estoy seguro(a)" data-en="Not sure yet">No estoy seguro(a)</option></select></div>
+    <div class="field"><label for="ar_size"><span data-l="es">Cuentas por cobrar aprox.</span><span data-l="en">Approx. A/R balance</span></label><select id="ar_size" name="ar_size"><option value="" data-es="Seleccione" data-en="Select one">Seleccione</option><option value="Under 50K" data-es="Menos de $50K" data-en="Under $50K">Menos de $50K</option><option value="50K-150K" data-es="$50K – $150K" data-en="$50K – $150K">$50K – $150K</option><option value="150K-400K" data-es="$150K – $400K" data-en="$150K – $400K">$150K – $400K</option><option value="400K+" data-es="Más de $400K" data-en="$400K+">Más de $400K</option><option value="Unknown" data-es="No sé" data-en="Not sure">No sé</option></select></div>
+   </div>
+   <div class="field"><label for="message"><span data-l="es">Mensaje (opcional)</span><span data-l="en">Message (optional)</span></label><textarea id="message" name="message" rows="4" placeholder="" data-ph-es="Especialidad, sistema que usan, qué les preocupa…" data-ph-en="Specialty, PM system, what's worrying you…"></textarea></div>
+   <div class="phi"><span data-l="es">Por favor, no incluya información de pacientes (PHI) en este formulario.</span><span data-l="en">Please don't include any patient information (PHI) in this form.</span></div>
+   <label class="consent"><input type="checkbox" name="consent" value="yes" required><span data-l="es">Acepto que ProCare me contacte por email sobre este recurso y sus servicios. Puedo darme de baja cuando quiera.</span><span data-l="en">I agree ProCare may email me about this resource and its services. I can unsubscribe anytime.</span></label>
+   <button class="btn btn-primary" type="submit" style="width:100%"><span data-l="es">Enviar</span><span data-l="en">Send</span></button>
+   <p class="err hidden"><span data-l="es">No se pudo enviar. Intente de nuevo o escríbanos a info@procarepr.com.</span><span data-l="en">That didn't go through. Please try again or email info@procarepr.com.</span></p>
+  </form>
+  <div id="ok-contact" class="ok hidden"><h3><span data-l="es">¡Gracias! Recibimos su mensaje.</span><span data-l="en">Thanks — we got it.</span></h3><p><span data-l="es">Le contactaremos pronto con los próximos pasos.</span><span data-l="en">We'll be in touch shortly with next steps.</span></p></div>
+ </div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><div class="foot-logo"><img src="/procare-logo-white.png" alt="ProCare Services LLC" width="160" height="40"></div><div>© <span class="yr">2026</span> ProCare Services LLC</div>
+<div><a href="mailto:info@procarepr.com">info@procarepr.com</a></div></div></footer>
+<script>
+(function(){
+  var dlg=document.getElementById('pk-view'); if(!dlg) return;
+  var img=dlg.querySelector('.pk-pg img'), gate=dlg.querySelector('.pk-gate'), cnt=dlg.querySelector('.pk-count');
+  var pages=[], free=1, i=0;
+  function show(){ img.src=pages[i]; var lk=i>=free; dlg.classList.toggle('locked',lk);
+    var es=document.documentElement.lang==='es'; cnt.textContent=(es?'Página ':'Page ')+(i+1)+(es?' de ':' of ')+pages.length;
+    dlg.querySelector('.pk-prev').disabled=i===0; dlg.querySelector('.pk-next').disabled=i===pages.length-1; }
+  document.querySelectorAll('.peek').forEach(function(p){
+    p.querySelectorAll('[data-i]').forEach(function(b){ b.addEventListener('click',function(){
+      pages=JSON.parse(p.getAttribute('data-pages')); free=+p.getAttribute('data-free'); i=+b.getAttribute('data-i');
+      show(); if(window.pcTrack) pcTrack('preview_open',{page:location.pathname}); if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open',''); });});
+  });
+  function close(){ if(dlg.close) dlg.close(); else dlg.removeAttribute('open'); }
+  dlg.querySelector('.pk-x').addEventListener('click',close);
+  dlg.querySelector('[data-close]').addEventListener('click',function(e){close();});
+  dlg.querySelectorAll('[data-close]').forEach(function(a){a.addEventListener('click',close)});
+  dlg.querySelector('.pk-prev').addEventListener('click',function(){if(i>0){i--;show();}});
+  dlg.querySelector('.pk-next').addEventListener('click',function(){if(i<pages.length-1){i++;show();}});
+  dlg.addEventListener('click',function(e){ if(e.target===dlg) close(); });
+  document.addEventListener('keydown',function(e){ if(!dlg.open) return;
+    if(e.key==='ArrowRight'&&i<pages.length-1){i++;show();} if(e.key==='ArrowLeft'&&i>0){i--;show();} });
+})();
+</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id)}
+  function v(id){var e=$(id);var n=parseFloat(e&&e.value);return isNaN(n)?0:n}
+  function money(n){return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US')}
+  function int(n){return Math.round(n).toLocaleString('en-US')}
+  function pct(n){return (Math.round(n*10)/10).toLocaleString('en-US')+'%'}
+  function T(es,en){return '<span data-l="es">'+es+'</span><span data-l="en">'+en+'</span>'}
+  function svc(es,en,href){return '<a class="svc-chip" href="'+href+'">'+T(es,en)+' →</a>'}
+  function track(n,p){if(window.pcTrack)pcTrack(n,p)}
+  var summaries={};
+  function setSummary(k,s){summaries[k]=s;document.querySelectorAll('input[name="results"][data-tool="'+k+'"]').forEach(function(i){i.value=s})}
+
+  var calc={
+  ar:function(){
+    var ch=v('ar_ch'),ratio=v('ar_ratio')/100||1,gross=$('ar_basis').value==='gross';
+    var b=[v('ar_b1'),v('ar_b2'),v('ar_b3'),v('ar_b4'),v('ar_b5')],p=[v('ar_p1'),v('ar_p2'),v('ar_p3'),v('ar_p4'),v('ar_p5')].map(function(x){return x/100});
+    var tot=b.reduce(function(a,c){return a+c},0);
+    var toNet=gross?ratio:1, toGross=gross?1:1/ratio;
+    var daily=ch*12/365, dar=daily>0?tot*toGross/daily:0, target=v('ar_t');
+    var freeG=Math.max(0,dar-target)*daily, freeN=freeG*ratio;       // cash = charges x payment ratio
+    var o90=tot>0?(b[3]+b[4])/tot*100:0;
+    var coll=(b[2]*p[2]+b[3]*p[3]+b[4]*p[4])*toNet;
+    var loss=(b[2]*(p[2]-p[3])+b[3]*(p[3]-p[4]))*toNet;
+    $('ar_o_dar').textContent=Math.round(dar);
+    $('ar_o_free').textContent=money(freeN);
+    $('ar_o_90').textContent=pct(o90);
+    $('ar_o_coll').textContent=money(coll);
+    $('ar_o_loss').textContent=money(Math.max(0,loss));
+    var h='';
+    if(dar>40) h+='<p>'+T('Sus días en A/R ('+Math.round(dar)+') están sobre 40, un punto de referencia común. ','Your days in A/R ('+Math.round(dar)+') are above 40, a common benchmark. ')+'</p>';
+    if(o90>15) h+='<p>'+T('Más del 15% de su A/R tiene más de 90 días — ahí es donde el dinero empieza a perderse.','More than 15% of your A/R is over 90 days — that is where money starts to slip away.')+'</p>';
+    if(!h) h='<p>'+T('Sus números están en un rango saludable. Una revisión puede confirmar que no hay reclamaciones escondidas a punto de vencer.','Your numbers look healthy. A review can confirm nothing is hiding close to its filing deadline.')+'</p>';
+    $('ar_v').innerHTML=h+'<div class="chips-out">'+svc('Limpieza de cuentas viejas','Aging A/R cleanup','/#servicios')+svc('Revisión gratis de A/R','Free A/R review','/evaluacion-cuentas-por-cobrar')+'</div>';
+    setSummary('ar','Days in A/R '+Math.round(dar)+' | Cash above target '+money(freeN)+' | A/R >90: '+pct(o90)+' | Collectible 61+: '+money(coll)+' | 30-day value at risk '+money(Math.max(0,loss))+' | Total A/R '+money(tot)+(gross?' (gross)':' (expected)'));
+  },
+  den:function(){
+    var c=v('dn_c'),d=v('dn_d')/100,pay=v('dn_p'),m=v('dn_m'),w=v('dn_w'),t=v('dn_t')/100,bn=v('dn_b')/100,u=v('dn_u')/100,r=v('dn_r')/100;
+    var loaded=bn<1?w/(1-bn):w;
+    var n=c*d, worked=n*(1-u), hrs=worked*m/60*12, cost=hrs*loaded, lost=n*u*pay*r*12;
+    var nT=c*Math.min(d,t), hrsT=nT*(1-u)*m/60*12, hs=Math.max(0,hrs-hrsT), ls=hs*loaded;
+    $('dn_o_n').textContent=int(n);
+    $('dn_o_h').textContent=int(hrs);
+    $('dn_o_l').textContent=money(cost);
+    $('dn_o_rev').textContent=money(lost);
+    $('dn_o_hs').textContent=int(hs);
+    $('dn_o_ls').textContent=money(ls);
+    var fte=hrs/2080, h='<p>'+T('Su equipo dedica el equivalente a '+(Math.round(fte*100)/100)+' empleados a tiempo completo solo a trabajar denegaciones (costo con beneficios: $'+loaded.toFixed(2)+'/hora).','Your team spends the equivalent of '+(Math.round(fte*100)/100)+' full-time employees just working denials (loaded cost: $'+loaded.toFixed(2)+'/hour).')+'</p>';
+    if(d>t) h+='<p>'+T('La mayoría de las denegaciones se pueden prevenir en la entrada: elegibilidad, autorizaciones y codificación.','Most denials are preventable at the front end: eligibility, authorizations and coding.')+'</p>';
+    $('dn_v').innerHTML=h+'<div class="chips-out">'+svc('Manejo de denegaciones','Denial management','/#servicios')+svc('Codificación','Coding','/#servicios')+svc('Auditoría Modificador 25','Modifier 25 audit','/auditoria-modificador-25')+'</div>';
+    setSummary('den','Denials/mo '+int(n)+' | Rework hrs/yr '+int(hrs)+' | Labor/yr '+money(cost)+' | Revenue never pursued/yr '+money(lost)+' | Hrs saved at '+pct(t*100)+': '+int(hs)+' ('+money(ls)+') | Inputs: '+int(c)+' claims, '+pct(d*100)+' denial, $'+pay+'/claim, '+m+' min, $'+w+'/hr');
+  },
+  tf:function(){
+    var dos=$('tf_dos').value, sel=$('tf_payer').value, box=$('tf_days').closest('.tf');
+    box.classList.toggle('hidden',sel!=='custom');
+    var today=new Date(); today.setHours(0,0,0,0);
+    function parse(s){var a=s.split('-');return new Date(+a[0],+a[1]-1,+a[2])}
+    function fmt(d){var es=document.documentElement.lang==='es';return d.toLocaleDateString(es?'es-PR':'en-US',{year:'numeric',month:'long',day:'numeric'})}
+    function left(dl){return Math.round((dl-today)/864e5)}
+    function say(n){return n<0?T('Venció hace '+(-n)+' días','Expired '+(-n)+' days ago'):n===0?T('Vence hoy','Due today'):T('Quedan '+n+' días','' +n+' days left')}
+    if(!dos){$('tf_o_date').textContent='—';$('tf_o_left').innerHTML=T('Escoja una fecha de servicio','Pick a date of service');$('tf_v').innerHTML='';return}
+    var d0=parse(dos), dl, total;
+    if(sel==='mcr'){dl=new Date(d0);dl.setFullYear(dl.getFullYear()+1)} else {var days=sel==='custom'?v('tf_days'):+sel;dl=new Date(d0);dl.setDate(dl.getDate()+days)}
+    total=Math.max(1,Math.round((dl-d0)/864e5)); var n=left(dl);
+    $('tf_o_date').textContent=fmt(dl); $('tf_o_left').innerHTML=say(n);
+    var used=Math.min(100,Math.max(0,(total-n)/total*100)); var bar=$('tf_o_bar'); bar.style.width=used+'%';
+    bar.className=n<0?'x':n<=30?'w':'';
+    var nd=$('tf_nd').value, rb=$('tf_o_red'), rtxt='';
+    if(nd){var r=parse(nd); r.setDate(r.getDate()+125); var rn=left(r); rb.classList.remove('hidden'); $('tf_o_rdate').textContent=fmt(r); $('tf_o_rleft').innerHTML=say(rn); rtxt=' | Redetermination due '+r.toISOString().slice(0,10)+' ('+rn+' days)';}
+    else rb.classList.add('hidden');
+    var h=n<0?'<p>'+T('Este término ya pasó. Pregunte si aplica una excepción (por ejemplo, error administrativo de la aseguradora) — si no, es dinero perdido.','This deadline has passed. Ask whether an exception applies (for example, a payer administrative error) — otherwise the money is gone.')+'</p>'
+          :n<=30?'<p>'+T('Menos de 30 días. Esta reclamación debe trabajarse esta semana.','Under 30 days. This claim needs to be worked this week.')+'</p>'
+          :'<p>'+T('Está a tiempo. ¿Cuántas reclamaciones más en su informe están cerca de su término?','You are on time. How many other claims on your report are close to their deadline?')+'</p>';
+    $('tf_v').innerHTML=h+'<div class="chips-out">'+svc('Limpieza de cuentas viejas','Aging A/R cleanup','/#servicios')+svc('Revisión gratis de A/R','Free A/R review','/evaluacion-cuentas-por-cobrar')+'</div>';
+    setSummary('tf','DOS '+dos+' | '+$('tf_payer').value+' | Deadline '+dl.toISOString().slice(0,10)+' ('+n+' days)'+rtxt);
+  },
+  cc:function(){
+    var areas={code:[0,0,0],risk:[0,0,0],hipaa:[0,0,0],prog:[0,0,0]}, ans=0, tot=0, risk=0;
+    document.querySelectorAll('.cc-q').forEach(function(q){tot++;var a=q.getAttribute('data-area'),c=q.querySelector('input:checked');areas[a][1]+=2;if(c){ans++;areas[a][0]+=+c.value;risk+=+c.value}});
+    var score=Math.round((1-risk/(tot*2))*100);
+    $('cc_o_prog').innerHTML=T(ans+' de '+tot+' respondidas',ans+' of '+tot+' answered');
+    if(!ans){$('cc_o_pct').textContent='—';$('cc_o_areas').innerHTML='';$('cc_v').innerHTML='';return}
+    $('cc_o_pct').textContent=score+'%';
+    var C=2*Math.PI*52, ring=$('cc_o_ring'); ring.style.strokeDasharray=C; ring.style.strokeDashoffset=C*(1-score/100);
+    ring.setAttribute('class','rg-fg '+(score>=80?'g':score>=55?'w':'x'));
+    var names={code:T('Codificación y documentación','Coding & documentation'),risk:T('Ajuste por riesgo','Risk adjustment'),hipaa:T('HIPAA','HIPAA'),prog:T('Programa de cumplimiento','Compliance program')};
+    var fix={code:svc('Auditoría de codificación','Coding audit','/#servicios')+svc('Guía MEAT V28','MEAT grid (V28)','/guia-meat-documentacion'),
+             risk:svc('Preparación RADV / HCC','RADV / HCC readiness','/#servicios')+svc('Lista de telemedicina','Telehealth checklist','/telemedicina-solo-audio'),
+             hipaa:svc('Cumplimiento HIPAA','HIPAA compliance','/#servicios'),
+             prog:svc('Programa de cumplimiento','Compliance program','/#servicios')};
+    var rows='',gaps='',sum=[];
+    Object.keys(areas).forEach(function(k){var a=areas[k],s=Math.round((1-a[0]/a[1])*100),cls=s>=80?'g':s>=50?'w':'x';
+      rows+='<div class="cc-row"><span>'+names[k]+'</span><i class="'+cls+'"><em style="width:'+s+'%"></em></i><b>'+s+'%</b></div>';
+      if(s<80) gaps+=fix[k]; sum.push(k+' '+s+'%')});
+    $('cc_o_areas').innerHTML=rows;
+    $('cc_v').innerHTML=(gaps?'<p>'+T('Estas áreas necesitan atención. Cada "No sé" cuenta como riesgo: en una auditoría, si no está documentado, no ocurrió.','These areas need attention. Every "Not sure" counts as risk: in an audit, if it isn\'t documented, it didn\'t happen.')+'</p><div class="chips-out">'+gaps+'</div>'
+       :'<p>'+T('Buena base. Una auditoría externa anual mantiene ese nivel.','Solid foundation. An annual external audit keeps it there.')+'</p>')
+       +'<p class="fine">'+T('Herramienta educativa; no es una determinación legal ni de cumplimiento.','Educational tool; not a legal or compliance determination.')+'</p>';
+    setSummary('cc','Readiness '+score+'% ('+ans+'/'+tot+' answered) | '+sum.join(' | '));
+  }};
+
+  document.querySelectorAll('div.tool[data-tool]').forEach(function(el){
+    var k=el.getAttribute('data-tool'); if(!calc[k]) return;
+    var started=false, done=false, t0=null;
+    function run(e){calc[k]();
+      if(e&&!started){started=true;t0=Date.now();track('tool_start',{tool:k})}
+      if(started&&!done){clearTimeout(el._t);el._t=setTimeout(function(){done=true;track('tool_result',{tool:k,seconds:Math.round((Date.now()-t0)/1000)})},2500)}}
+    el.addEventListener('input',run); el.addEventListener('change',run);
+    if(k==='tf'){var d=new Date();d.setDate(d.getDate()-75);$('tf_dos').value=d.toISOString().slice(0,10)}
+    calc[k]();
+  });
+  // re-render language-dependent results when the ES/EN toggle is used
+  document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){setTimeout(function(){Object.keys(calc).forEach(function(k){if(document.querySelector('div.tool[data-tool="'+k+'"]'))calc[k]()})},0)})});
+})();
+</script>
+
+<script>
+(function(){
+  function apply(l){
+    document.documentElement.lang=l;
+    document.querySelectorAll('[data-ph-'+l+']').forEach(function(el){el.placeholder=el.getAttribute('data-ph-'+l)});
+    document.querySelectorAll('option[data-'+l+']').forEach(function(o){o.textContent=o.getAttribute('data-'+l)});
+    document.querySelectorAll('input[name="language_seen"]').forEach(function(i){i.value=l==='es'?'Español':'English'});
+    var t=document.querySelector('meta[name="title-'+l+'"]'); if(t) document.title=t.content;
+  }
+  window.pcSetLang=function(l){try{localStorage.setItem('pc_lang',l)}catch(e){} apply(l)};
+  document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){pcSetLang(b.getAttribute('data-set'))})});
+  apply(document.documentElement.lang||'es');
+
+  // Netlify form submission (AJAX) — shows success panel instead of leaving the page
+  document.querySelectorAll('form[data-netlify]').forEach(function(f){
+    f.addEventListener('submit',function(ev){
+      ev.preventDefault();
+      var btn=f.querySelector('button[type=submit]'); if(btn) btn.disabled=true;
+      var err=f.querySelector('.err'); if(err) err.classList.add('hidden');
+      var fd=new FormData(f);
+      var body=new URLSearchParams(fd).toString();
+      // 1) Netlify keeps a free copy of every submission (Forms tab)
+      var toNetlify=fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}).catch(function(){return {ok:false};});
+      // 2) Web3Forms emails the lead to info@ for free (when the key is set)
+      var KEY='16734506-0984-4dfd-aee8-b5f83bf1f8d4', toEmail=Promise.resolve({ok:false});
+      if(KEY.indexOf('__')!==0){
+        var o={access_key:KEY,subject:'New ProCare lead: '+(fd.get('resource')||(fd.get('form-name')==='contact'?'Contact form':'Free A/R review request')),from_name:'ProCare website'};
+        fd.forEach(function(v,k){ if(k!=='bot-field'&&k!=='form-name') o[k]=v; });
+        if(fd.get('bot-field')) o.botcheck=true;
+        toEmail=fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(o)}).catch(function(){return {ok:false};});
+      }
+      Promise.all([toNetlify,toEmail])
+        .then(function(rs){ if(!rs[0].ok && !rs[1].ok) throw new Error('send failed');
+          f.classList.add('hidden'); if(window.pcTrack) pcTrack('generate_lead',{form:fd.get('form-name')});
+          var ok=document.getElementById(f.getAttribute('data-ok')); if(ok){ok.classList.remove('hidden'); ok.scrollIntoView({behavior:'smooth',block:'center'});
+            ['name','practice','email'].forEach(function(n){var a=f.querySelector('[name='+n+']'),b=ok.querySelector('[name='+n+']'); if(a&&b&&!b.value) b.value=a.value;});}
+        })
+        .catch(function(){ if(btn) btn.disabled=false; if(err) err.classList.remove('hidden'); });
+    });
+  });
+  var q=location.search.match(/utm_source=([^&]+)/); var src=q?decodeURIComponent(q[1]):(document.referrer?document.referrer.split('/')[2]:'direct');
+  document.querySelectorAll('input[name="traffic_source"]').forEach(function(i){i.value=src});
+  document.addEventListener('click',function(e){document.querySelectorAll('details.rmenu[open]').forEach(function(d){if(!d.contains(e.target))d.removeAttribute('open')})});
+  var y=document.querySelectorAll('.yr'); y.forEach(function(e){e.textContent=new Date().getFullYear()});
+})();
+</script>
+</body>
+</html>
